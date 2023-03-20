@@ -1,0 +1,8 @@
+**__pycache__**
+**~$**
+**.html
+*.npy
+*.tar.gz
+.DS_Store
+checkpoint/*
+!checkpoint/readme

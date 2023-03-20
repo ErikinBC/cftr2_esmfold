@@ -1,0 +1,379 @@
+mutation,to,from,cDNA_ncbi,protein_ncbi,cftr2_cDNA,cftr2_protein,links
+1078delT,117540176,117540176,c.948del,p.Phe316fs,c.948delT,p.Phe316LeufsX12,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007583
+1119delA,117540215,117540215,c.987del,p.Gly330fs,c.987delA,p.Gly330GlufsX39,https://www.ncbi.nlm.nih.gov/clinvar/variation/54097
+1138insG,117540237,117540236,c.1006_1007insG,p.Ile336fs,c.1006_1007insG,p.Ile336SerfsX28,https://www.ncbi.nlm.nih.gov/clinvar/variation/53161
+1154insTC,117540249,117540248,c.1021_1022dup,p.Phe342fs,c.1021_1022dupTC,p.Phe342HisfsX28,https://www.ncbi.nlm.nih.gov/clinvar/RCV000780169.1
+1161delC,117540259,117540259,c.1029del,p.Phe342_Cys343insTer,c.1029delC,p.Cys343X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046204.6
+1213delT,117540311,117540311,c.1081del,p.Trp361fs,c.1081delT,p.Trp361GlyfsX8,https://www.ncbi.nlm.nih.gov/clinvar/variation/7135
+1249-1G->A,117542015,117542015,c.1117-1G>A,no_ncbi,c.1117-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000191004,"
+124del23bp,117480104,117480082,c.-9_14del,no_ncbi,c.-9_14del23,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046190,"
+1259insA,117542026,117542025,c.1130dup,p.Gln378fs,c.1130dupA,p.Gln378AlafsX4,https://www.ncbi.nlm.nih.gov/clinvar/variation/487392
+1288insTA,117542051,117542050,c.1155_1156dup,p.Asn386fs,c.1155_1156dupTA,p.Asn386IlefsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046247.8
+1342-2A->C,117548639,117548639,c.1210-2A>C,no_ncbi,c.1210-2A>C,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001193108.2,"
+1343delG,117548640,117548640,c.1211delG,no_ncbi,c.1211delG,p.Gly404AspfsX38,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000576433.1,"
+1429del7,117531050,117531050,c.429del,p.Phe143LeufsX10,c.1301_1307delCACTTCT,p.Ser434LeufsX6,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007567
+1460delAT,117548760,117548759,c.1330_1331del,p.Ile444X,c.1330_1331delAT,p.Ile444X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000780144.1
+1461ins4,117548757,117548756,c.1327_1330dup,p.Ile444fs,c.1327_1330dupGATA,p.Ile444ArgfsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000169333
+1471delA,117548770,117548770,c.1340del,p.Lys447fs,c.1340delA,p.Lys447ArgfsX2,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046278
+1497delGG,117548797,117548796,c.1365_1366del,p.Val456fs,c.1365_1366delGG,p.Val456CysfsX25,https://www.ncbi.nlm.nih.gov/clinvar/RCV000191006
+1504delG,117548803,117548803,c.1373del,p.Gly458fs,c.1373delG,p.Gly458AspfsX11,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004448.1
+1525-1G->A,117559463,117559463,c.1393-1G>A,no_ncbi,c.1393-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056347.7,"
+1525-2A->G,117559462,117559462,c.1393-2A>G,no_ncbi,c.1393-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046291,"
+1548delG,117559487,117559487,c.1418del,p.Gly473fs,c.1418delG,p.Gly473GlufsX54,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046300.6
+1609delCA,117559549,117559548,c.1477_1478del,p.Gln493fs,c.1477_1478delCA,p.Gln493ValfsX10,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007640.6
+1677delTA,117559614,117559613,c.1545_1546del,p.Tyr515_Arg516delinsTer,c.1545_1546delTA,p.Tyr515X,https://www.ncbi.nlm.nih.gov/clinvar/68101184
+1717-1G->A,117587738,117587738,c.1585-1G>A,no_ncbi,c.1585-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001004462.1,"
+1717-2A->G,117587737,117587737,c.1585-2A>T,no_ncbi,c.1585-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001328347,"
+1717-8G->A,117587731,117587731,c.1585-8G>A,no_ncbi,c.1585-8G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000029481,"
+175insT,117480138,117480137,c.50dup,p.Ser18fs,c.50dupT,p.Ser18GlnfsX27,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577158
+1782delA,117587806,117587806,c.1652G>A,p.Gly551Asp,c.1650delA,p.Gly551ValfsX8,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007540
+1802delC,117587824,117587824,c.1670del,p.Ser557fs,c.1670delC,p.Ser557PhefsX2,https://www.ncbi.nlm.nih.gov/clinvar/variation/53326
+1812-1G->A,117590352,117590352,c.1680-1G>A,no_ncbi,c.1680-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056352,"
+1824delA,117590363,117590363,c.1692del,p.Asp565fs,c.1692delA,p.Asp565MetfsX7,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004267.1
+182delT,117480138,117480138,c.50del,p.Phe17fs,c.50delT,p.Phe17SerfsX8,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047175
+1833delT,117590376,117590376,c.1703T>A,p.Leu568Ter,c.1703delT,p.Leu568CysfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046430
+1949del84,117592067,117591984,c.1820_1903del,p.Met607_Gln634del,c.1820_1903del84,p.Met607_Gln634del,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046486
+2043delG,117592078,117592078,c.1911del,p.Gln637fs,c.1911delG,p.Gln637HisfsX26,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029489
+2055del9->A,117592098,117592090,c.1923_1931delinsA,p.Ser641fs,c.1923_1931delinsA,p.Ser641ArgfsX5,https://www.ncbi.nlm.nih.gov/clinvar/variation/38735
+2075delA,117592110,117592110,c.1943del,p.Asp648fs,c.1943delA,p.Asp648ValfsX15,https://www.ncbi.nlm.nih.gov/clinvar/variation/634829
+2105-2117del13insAGAAA,117592152,117592140,c.1973_1985delinsAGAAA,p.Arg658fs,c.1973_1985del13insAGAAA,p.Arg658LysfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004280.1
+2118del4,117592154,117592151,c.1986_1989del,p.Thr663fs,c.1986_1989delAACT,p.Thr663ArgfsX8,https://www.ncbi.nlm.nih.gov/clinvar/variation/53421
+2143delT,117592178,117592178,c.2012del,p.Ser670_Leu671insTer,c.2012delT,p.Leu671X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029491
+2183AA->G,117592219,117592218,c.2051_2052delinsG,p.Lys684fs,c.2051_2052delAAinsG,p.Lys684SerfsX38,https://www.ncbi.nlm.nih.gov/clinvar/variation/35837
+2184delA,117592213,117592213,c.2052del,p.Lys684Asnfs*38,c.2052delA,p.Lys684AsnfsX38,https://www.ncbi.nlm.nih.gov/clinvar/RCV000598782
+2184insA,117592213,117592212,c.2052dup,p.Gln685Thrfs*4,c.2052dupA,p.Gln685ThrfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029493
+2185insC,117592220,117592219,c.2053dup,no_ncbi,c.2053dupC,p.Gln685ProfsX84,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001835856.1,"
+2307insA,117592341,117592340,c.2175dup,p.Glu726Argfs,c.2175dupA,p.Glu726ArgfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004471.1
+2347delG,117592382,117592382,c.2215del,p.Val739fs,c.2215delG,p.Val739TyrfsX16,https://www.ncbi.nlm.nih.gov/clinvar/variation/53455
+2372del8,117531067,117531067,c.442del,p.Ile148fs,c.2241_2248delGATACTGC,p.Ile748SerfsX28,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056392
+2556insAT,117592584,117592583,c.2423_2424dup,p.Ser809fs,c.2423_2424dupAT,p.Ser809IlefsX13,https://www.ncbi.nlm.nih.gov/clinvar/variation/209046
+2585delT,117592619,117592619,c.2453del,p.Leu818fs,c.2453delT,p.Leu818TrpfsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056364
+2594delGT,117592630,117592629,c.2463_2464del,p.Ser821fs,c.2463_2464delTG,p.Ser821ArgfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000551959
+2634insT,117594936,117594935,c.2502dup,p.Asp835X,c.2502dupT,p.Asp835X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001009446.2
+2711delT,117595018,117595018,c.2583del,p.Phe861fs,c.2583delT,p.Phe861LeufsX3,https://www.ncbi.nlm.nih.gov/clinvar/variation/53515
+2732insA,117536667,117536663,c.861_865del,p.Asn287fs,c.2601dupA,p.Val868SerfsX28,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047272
+2752-26A->G,117602800,117602800,c.2620-26A>G,no_ncbi,c.2620-26A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000672705,"
+2790-1G->C,117603531,117603531,c.2658-1G>C,no_ncbi,c.2658-1G>C,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000190990.2,"
+2869insG,117603612,117603611,c.2737_2738insG,no_ncbi,c.2737_2738insG,p.Tyr913X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000007569,"
+2896insAG,117603636,117603635,c.2763_2764dup,p.Val922fs,c.2763_2764dupAG,p.Val922GlufsX2,https://www.ncbi.nlm.nih.gov/clinvar/variation/53563
+2942insT,117603684,117603683,c.2810dup,no_ncbi,c.2810dupT,p.Val938GlyfsX37,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000029504,"
+2954delT,117610527,117610524,c.2997_3000del,p.Leu999_Ile1000insTer,c.2822delT,p.Leu941GlnfsX27,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046747
+2957delT,117610610,117610610,c.3080T>C,p.Ile1027Thr,c.2825delT,p.Ile942ThrfsX26,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029515
+297-1G->A,117509033,117509033,c.165-1G>A,no_ncbi,c.165-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000280788,"
+297-3C->T,117509031,117509031,c.165-3C>T,no_ncbi,c.165-3C>T,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001004227.1,"
+3007delG,117603749,117603749,c.2875del,p.Ala959fs,c.2875delG,p.Ala959HisfsX9,https://www.ncbi.nlm.nih.gov/clinvar/RCV000781227
+300delA,117509036,117509036,c.168del,p.Glu56AspfsX35,c.168delA,p.Glu56AspfsX35,https://www.ncbi.nlm.nih.gov/clinvar/RCV001284130
+3028delA,117531050,117531050,c.429del,p.Phe143fs,c.2896delA,p.Thr966ArgfsX2,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007567
+306delTAGA,117509044,117509041,c.174_177del,p.Asp58fs,c.174_177delTAGA,p.Asp58GlufsX32,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576840
+306insA,117509044,117509043,c.175dup,no_ncbi,c.175dupA,p.Arg59LysfsX10,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046458,"
+3120G->A,117606753,117606753,c.2988G>A,no_ncbi,c.2988G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000029512,"
+3121-1G->A,117610518,117610518,c.2989-1G>A,no_ncbi,c.2989-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056376,"
+3121-2A->G,117610517,117610517,c.2989-2A>G,no_ncbi,c.2989-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046741,"
+3130delA,117610527,117610527,c.2998del,p.Ile1000fs,c.2998delA,p.Ile1000LeufsX2,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577236
+3132delTG,117610531,117610530,c.3002_3003del,p.Val1001fs,c.3002_3003delTG,p.Val1001AspfsX45,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046752
+3171delC,117610567,117610567,c.3039del,p.Tyr1014fs,c.3039delC,p.Tyr1014ThrfsX9,https://www.ncbi.nlm.nih.gov/clinvar/variation/53636
+3171insC,117610567,117610566,c.3039dup,p.Tyr1014fs,c.3039dupC,p.Tyr1014LeufsX33,https://www.ncbi.nlm.nih.gov/clinvar/variation/53635
+3199del6,117610598,117610593,c.3067_3072del,p.Ile1023_Val1024del,c.3067_3072delATAGTG,p.Ile1023_Val1024del,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046775
+3272-26A->G,117611555,117611555,c.3140-26A>G,no_ncbi,c.3140-26A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001004294,"
+3349insT,117540273,117540273,c.1043T>A,p.Met348Lys,c.3217dupT,p.Tyr1073LeufsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046210
+3497delC,117540273,117540273,c.1043T>A,p.Met348Lys,c.3365delC,p.Thr1122LysfsX12,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046210
+3500-2A->G,117614611,117614611,c.3368-2A>G,no_ncbi,c.3368-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000169111,"
+3600G->A,117614713,117614713,c.3468G>A,no_ncbi,c.3468G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046899.6,"
+365-366insT,117509097,117509096,c.233dup,p.Trp79fs,c.233dupT,p.Trp79LeufsX32,https://www.ncbi.nlm.nih.gov/clinvar/RCV000508526
+3659delC,117627580,117627580,c.3528del,p.Lys1177fs,c.3528delC,p.Lys1177SerfsX15,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029523
+3667ins4,117627585,117627584,c.3532_3535dup,p.Thr1179fs,c.3532_3535dupTCAA,p.Thr1179IlefsX17,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007643
+3732delA,117627651,117627651,c.3600del,p.Asp1201MetfsX10,c.3600delA,p.Asp1201MetfsX10,https://www.ncbi.nlm.nih.gov/clinvar/RCV001731143
+3737delA,117606704,117606704,c.2939T>A,p.Ile980Lys,c.3605delA,p.Asp1202AlafsX9,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577032
+3791delC,117627712,117627712,c.3659del,p.Thr1220fs,c.3659delC,p.Thr1220LysfsX8,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007544
+3821delT,117627742,117627742,c.3691del,p.Ser1231fs,c.3691delT,p.Ser1231ProfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029526
+3849G->A,117627771,117627771,c.3717+1G>A,no_ncbi,c.3717G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000780151.1,"
+3850-1G->A,117642437,117642437,c.3718-1G>A,no_ncbi,c.3718-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000007597,"
+3850-3T->G,117642435,117642435,c.3718-3T>G,no_ncbi,c.3718-3T>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046958,"
+3876delA,117642464,117642464,c.3744del,p.Lys1250fs,c.3744delA,p.Lys1250ArgfsX9,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007653
+3878delG,117642465,117642465,c.3747del,no_ncbi,c.3747delG,p.Lys1250ArgfsX9,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000191001,"
+3905insT,117642488,117642487,c.3773dup,p.Leu1258Phefs*7,c.3773dupT,p.Leu1258PhefsX7,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004507
+3940delG,117642528,117642528,c.3808G>A,p.Asp1270Asn,c.3808delG,p.Asp1270MetfsX8,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046985
+394delTT,117509129,117509128,c.262_263del,p.Leu88fs,c.262_263delTT,p.Leu88IlefsX22,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007654
+4010del4,117652849,117652846,c.3883_3886delATTT,no_ncbi,c.3883_3886delATTT,p.Ile1295PhefsX32,"https://www.ncbi.nlm.nih.gov/clinvar/51064602,"
+4015delA,117652851,117652851,c.3883del,p.Ile1295fs,c.3883delA,p.Ile1295PhefsX33,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047016
+4016insT,117652852,117652851,c.3889dup,p.Ser1297fs,c.3889dupT,p.Ser1297PhefsX5,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047018
+4022insT,117652859,117652858,c.3891dup,p.Gly1298fs,c.3891dupT,p.Gly1298TrpfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577151
+4040delA,117652871,117652871,c.3908del,p.Asn1303fs,c.3908delA,p.Asn1303ThrfsX25,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047026.4
+406-1G->A,117530898,117530898,c.274-1G>A,no_ncbi,c.274-1G>A,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056370,"
+406-2A->G,117530897,117530897,c.274-2A>G,no_ncbi,c.274-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577517,"
+4168delCTAAGCC,117531050,117531050,c.429del,p.Phe143LeufsX10,c.4036_4042del,p.Leu1346MetfsX6,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007567
+4209TGTT->AA,117664804,117664801,c.4077_4080delinsAA,no_ncbi,c.4077_4080delTGTTinsAA,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001004515,"
+4218insT,117664810,117664809,c.4086dup,p.Lys1363Ter,c.4086dupT,p.Lys1363X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001829611.1
+4259del5,117664854,117664850,c.4127_4131delMANE,p.Leu1376fs,c.4127_4131delTGGAT,p.Leu1376SerfsX8,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576801.1
+4279insA,117531050,117531050,c.429del,p.Phe143fs,c.4147dupA,p.Ile1383AsnfsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007567
+4326delTC,117665517,117665516,c.4197_4198del,p.Leu1399_Cys1400insTer,c.4197_4198delCT,p.Cys1400X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047100.5
+4382delA,117666915,117666915,c.4251del,p.Glu1418fs,c.4251delA,p.Glu1418ArgfsX14,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056391.5
+4428insGA,117666962,117666961,c.4300_4301dup,p.Ser1435fs,c.4300_4301dup,p.Ser1435GlyfsX14,https://www.ncbi.nlm.nih.gov/clinvar/RCV001009393
+442delA,117530934,117530934,c.310del,p.Arg104fs,c.310delA,p.Arg104GlufsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046784
+444delA,117530937,117530937,c.313delA,p.Ile105fs,c.313delA,p.Ile105SerfsX2,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046792
+457TAT->G,117530952,117530950,c.325_327delinsG,p.Tyr109fs,c.325_327delTATinsG,p.Tyr109GlyfsX4,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056378
+541delC,117531034,117531034,c.409del,p.Leu137fs,c.409delC,p.Leu137SerfsX16,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047072
+556delA,117531049,117531049,c.424del,p.Ile142PhefsX11,c.424delA,p.Ile142PhefsX11,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007566
+557delT,117531050,117531050,c.429del,p.Phe143LeufsX10,c.429delT,p.Phe143LeufsX10,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007567
+574delA,117531067,117531067,c.442del,p.Ile148fs,c.442delA,p.Ile148LeufsX5,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056392
+5T,117548630,117548629,c.1210-12T,no_ncbi,c.1210−12T[5],No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000155619,"
+602del14,117531107,117531094,c.470_483delLRG_663,no_ncbi,c.470_483delTTAGTTTGATTTAT,p.Phe157X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000576514.1,"
+663delT,117534316,117534316,c.531del,p.Ile177fs,c.531delT,p.Ile177MetfsX12,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056393
+663insT,117534316,117534315,c.531dup,p.Gly178fs,c.531dupT,p.Gly178TrpfsX5,https://www.ncbi.nlm.nih.gov/clinvar/RCV000589412
+675del4,117534330,117534327,c.543_546del,p.Leu183fs,c.543_546delTAGT,p.Leu183PhefsX5,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047188
+712-1G->T,117535247,117535247,c.580-1G>T,no_ncbi,c.580-1G>T,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001004440.1,"
+712-2A->G,117535246,117535246,c.580-2A>G,no_ncbi,c.580-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001038806,"
+849delG,117535383,117535383,c.717del,p.Gly239_Leu240insTer,c.717delG,p.Leu240X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576798
+876-2A->G,117536546,117536546,c.744-2A>G,no_ncbi,c.744-2A>G,No protein name,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000411056,"
+892delA,117610610,117610610,c.3080T>C,p.Ile1027Thr,c.761delA,p.Lys254ArgfsX7,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029515
+935delA,117536604,117536604,c.803del,p.Asn268fs,c.803delA,p.Asn268IlefsX17,https://www.ncbi.nlm.nih.gov/clinvar/variation/48700
+977insA,117536654,117536654,c.850dupA,p.Met284Asnfs,c.850dupA,p.Met284AsnfsX3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000270269
+991del5,117536667,117536663,c.861_865del,p.Asn287fs,c.861_865delCTTAA,p.Asn287LysfsX19,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047272
+A1006E,117610547,117610547,c.3017C>A,p.Ala1006Glu,c.3017C>A,p.Ala1006Glu,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577175.3,https://www.ncbi.nlm.nih.gov/clinvar/variation/53627"
+A120T,117530983,117530983,c.358G>A,p.Ala120Thr,c.358G>A,p.Ala120Thr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577110.3
+A349V,117540276,117540276,c.1046C>T,p.Ala349Val,c.1046C>T,p.Ala349Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000728852
+A455E,117548795,117548795,c.1364C>A,p.Ala455Glu,c.1364C>A,p.Ala455Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004446.1
+A46D,117504336,117504336,c.137C>A,p.Ala46Asp,c.137C>A,p.Ala46Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046286
+A559T,117587829,117587829,c.1675G>A,p.Ala559Thr,c.1675G>A,p.Ala559Thr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007543
+A561E,117590355,117590355,c.1682C>A,p.Ala561Glu,c.1682C>A,p.Ala561Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007662
+A613T,117592004,117592004,c.1837G>A,p.Ala613Thr,c.1837G>A,p.Ala613Thr,"https://www.ncbi.nlm.nih.gov/clinvar/24358256,https://www.ncbi.nlm.nih.gov/clinvar/variation/53401"
+C225X,117540273,117540273,c.1043T>A,p.Met348Lys,c.675T>A,p.Cys225X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046210
+C276X,117536632,117536632,c.828C>A,p.Cys276Ter,c.828C>A,p.Cys276X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047263.5
+C524X,117559643,117559643,c.1572C>A,p.Cys524Ter,c.1572C>A,p.Cys524X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007571
+"CFTRdele2,3",117519392,117498313,c.54-5940_273+10250del,no_ncbi,c.54-5940_273+10250del21kb,p.Ser18ArgfsX16,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056395,"
+D110E,117530955,117530955,c.330C>A,p.Asp110Glu,c.330C>A,p.Asp110Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577359
+D110H,117530953,117530953,c.328G>C,p.Asp110His,c.328G>C,p.Asp110His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007527
+D1152H,117614699,117614699,c.3454G>C,p.Asp1152His,c.3454G>C,p.Asp1152His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046895
+D1270N,117642528,117642528,c.3808G>A,p.Asp1270Asn,c.3808G>A,p.Asp1270Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046985
+D192G,117534361,117534361,c.575A>G,p.Asp192Gly,c.575A>G,p.Asp192Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577568
+D443Y,117548758,117548758,c.1327G>T,p.Asp443Tyr,c.1327G>T,p.Asp443Tyr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046274
+D513G,117559609,117559609,c.1538A>G,p.Asp513Gly,c.1538A>G,p.Asp513Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577027
+D579G,117590409,117590409,c.1736A>G,p.Asp579Gly,c.1736A>G,p.Asp579Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577633.1
+D614G,117592008,117592008,c.1841A>G,p.Asp614Gly,c.1841A>G,p.Asp614Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577786.3
+D924N,117603644,117603644,c.2770G>A,p.Asp924Asn,c.2770G>A,p.Asp924Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046686
+D979V,117606701,117606701,c.2936A>T,p.Asp979Val,c.2936A>T,p.Asp979Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577309
+E1104X,117611751,117611751,c.3310G>T,p.Glu1104Ter,c.3310G>T,p.Glu1104X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001831774
+E116K,117530971,117530971,c.346G>A,p.Glu116Lys,c.346G>A,p.Glu116Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577691
+E1371X,117664835,117664835,c.4111G>T,p.Glu1371Ter,c.4111G>T,p.Glu1371X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000047076.8,https://www.ncbi.nlm.nih.gov/clinvar/variation/53891"
+E193K,117534363,117534363,c.577G>A,p.Glu193Lys,c.577G>A,p.Glu193Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047198
+E193X,117534363,117534363,c.577GT,p.Glu193Ter,c.577G>T,p.Glu193X,https://www.ncbi.nlm.nih.gov/clinvar/variation/54007
+E379X,117509047,117509047,c.178G>T,p.Glu60Ter,c.1135G>T,p.Glu379X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056355
+E474K,117559491,117559491,c.1420G>A,p.Glu474Lys,c.1420G>A,p.Glu474Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000785640
+E56K,117509035,117509035,c.166G>A,p.Glu56Lys,c.166G>A,p.Glu56Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000660826
+E585X,117590426,117590426,c.1753G>T,p.Glu585Ter,c.1753G>T,p.Glu585X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056353
+E588V,117590436,117590436,c.1763A>T,p.Glu588Val,c.1763A>T,p.Glu588Val,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577259,https://www.ncbi.nlm.nih.gov/clinvar/variation/53375"
+E60K,117509047,117509047,c.178G>A,p.Glu60Lys,c.178G>A,p.Glu60Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577024
+E60X,117509047,117509047,c.178G>T,p.Glu60Ter,c.178G>T,p.Glu60X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056355
+E656X,117592133,117592133,c.1966G>T,p.Glu656X,c.1966G>T,p.Glu656X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577648
+E664X,117592157,117592157,c.1990G>T,p.Glu664Ter,c.1990G>T,p.Glu664X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046516,https://www.ncbi.nlm.nih.gov/clinvar/variation/53422"
+E822X,117592631,117592631,c.2464G>T,p.Glu822Ter,c.2464G>T,p.Glu822X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056365
+E831X,117594930,117594930,c.2491G>T,p.Glu831Ter,c.2491G>T,p.Glu831X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056366
+E92K,117530899,117530899,c.274G>A,p.Glu92Lys,c.274G>A,p.Glu92Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007601
+E92X,117530899,117530899,c.274G>T,p.Glu92Ter,c.274G>T,p.Glu92X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007606
+F1016S,117610577,117610577,c.3047T>C,p.Phe1016Ser,c.3047T>C,p.Phe1016Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577048.1
+F1052V,117611595,117611595,c.3154T>G,p.Phe1052Val,c.3154T>G,p.Phe1052Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046799
+F1074L,117611663,117611663,c.3222T>A,p.Phe1074Leu,c.3222T>A or c.3220T>C or c.3222T>G,p.Phe1074Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046829.5
+F1099L,117611738,117611738,c.3297C>A,p.Phe1099Leu,c.3297C>A,p.Phe1099Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000586297
+F191V,117534357,117534357,c.571T>G,p.Phe191Val,c.571T>G,p.Phe191Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000587145
+F311L,117540163,117540163,c.933C>GMANE,p.Phe311Leu,c.933C>G or c.933C>A,p.Phe311Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007573
+F312del,117540167,117540165,c.935_937delTCT,no_ncbi,c.935_937delTCT,p.Phe312del,"https://www.ncbi.nlm.nih.gov/clinvar/42817867,"
+F508del,117559593,117559591,c.1521_1523del,p.Phe508del,c.1521_1523delCTT,p.Phe508del,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007523
+F575Y,117590397,117590397,c.1724T>A,p.Phe575Tyr,c.1724T>A,p.Phe575Tyr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000803536
+G1061R,117611622,117611622,c.3181G>C,p.Gly1061Arg,c.3181G>C,p.Gly1061Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046807
+G1069R,117611646,117611646,c.3205G>A,p.Gly1069Arg,c.3205G>A,p.Gly1069Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046823
+G1244E,117642451,117642451,c.3731G>A,p.Gly1244Glu,c.3731G>A,p.Gly1244Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056386
+G1249R,117642465,117642465,c.3745G>A,p.Gly1249Arg,c.3745G>A,p.Gly1249Arg,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577065.3,https://www.ncbi.nlm.nih.gov/clinvar/RCV000757851"
+G126D,117531002,117531002,c.377G>A,p.Gly126Asp,c.377G>A,p.Gly126D,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004429
+G1349D,117664770,117664770,c.4046G>A,p.Gly1349Asp,c.4046G>A,p.Gly1349Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029536
+G178R,117534318,117534318,c.532G>A,p.Gly178Arg,c.532G>A,p.Gly178Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000211246.1
+G194R,117535247,117535247,c.580-1G>T,no_ncbi,c.580G>A,p.Gly194Arg,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056398,"
+G194V,117535249,117535249,c.581G>T,p.Gly194Val,c.581G>T,p.Gly194Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000729929.5
+G194X,117535247,117535247,c.580-1G>T,no_ncbi,c.580G>T,p.Gly194X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056398,"
+G27R,117504278,117504278,c.79G>A,p.Gly27Arg,c.79G>A,p.Gly27Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577762
+G27X,117504278,117504278,c.79G>T,p.Gly27Ter,c.79G>T,p.Gly27X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047257
+G314E,117540171,117540171,c.941G>A,p.Gly314Glu,c.941G>A,p.Gly314Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004243
+G330X,117540218,117540218,c.988G>T,p.Gly330Ter,c.988G>T,p.Gly330X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004245
+G542X,117587778,117587778,c.1624G>T,p.Gly542Ter,c.1624G>T,p.Gly542X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007535
+G550X,117587802,117587802,c.1648G>T,p.Gly550Ter,c.1648G>T,p.Gly550X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046380.4
+G551D,117587806,117587806,c.1652G>A,p.Gly551Asp,c.1652G>A,p.Gly551Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007540
+G551S,117587805,117587805,c.1651G>A,p.Gly551Ser,c.1651G>A,p.Gly551Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007562
+G622D,117592032,117592032,c.1865G>A,p.Gly622Asp,c.1865G>A,p.Gly622Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046498
+G628R,117592049,117592049,c.1882G>A,p.Gly628Arg,c.1882G>C or c.1882G>A,p.Gly628Arg,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577750.4,https://www.ncbi.nlm.nih.gov/clinvar/variation/53408"
+G673X,117509047,117509047,c.178G>T,p.Glu60Ter,c.2017G>T,p.Gly673X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056355
+G745X,117592400,117592400,c.2233G>T,p.Gly745X,c.2233G>T,p.Gly745X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001009459.2
+G85E,117509123,117509123,c.254G>A,p.Gly85Glu,c.254G>A,p.Gly85Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007563
+G91R,117509140,117509140,c.271G>A,p.Gly91Arg,c.271G>A,p.Gly91Arg,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000007603,https://www.ncbi.nlm.nih.gov/clinvar/variation/7183"
+G970D,117606674,117606674,c.2909G>A,p.Gly970Asp,c.2909G>A,p.Gly970Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004490.1
+G970R,117603782,117603782,c.2908G>C,p.Gly970Arg,c.2908G>C,p.Gly970Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056374
+H1054D,117611601,117611601,c.3160C>G,p.His1054Asp,c.3160C>G,p.His1054Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046801
+H1375P,117664848,117664848,c.4124A>C,p.His1375Pro,c.4124A>C,p.His1375Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047080
+H139R,117531041,117531041,c.416A>C,p.His139Pro,c.416A>G,p.His139Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000625939
+H199Y,117535263,117535263,c.595C>T,p.His199Tyr,c.595C>T,p.His199Tyr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056399
+H609R,117591993,117591993,c.1826A>G,p.His609Arg,c.1826A>G,p.His609Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577469
+I1234V,117627753,117627753,c.3700A>G,p.Ile1234Val,c.3700A>G,p.Ile1234Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007636
+I1269N,117642526,117642526,c.3806T>A,p.Ile1269Asn,c.3806T>A,p.Ile1269Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000785635
+I1366N,117664821,117664821,c.4097T>C,p.Ile1366Thr,c.4097T>A,p.Ile1366Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000630457
+I336K,117540237,117540237,c.1007T>A,p.Ile336Lys,c.1007T>A,p.Ile336Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056337.8
+I502T,117559576,117559576,c.1505T>C,p.Ile502Thr,c.1505T>C,p.Ile502Thr,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577239,https://www.ncbi.nlm.nih.gov/clinvar/variation/53272"
+I507del,117559589,117559587,c.1516ATC,p.Ile507del,c.1519_1521delATC,p.Ile507del,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007525.17
+I601F,117591968,117591968,c.1801A>T,p.Ile601Phe,c.1801A>T,p.Ile601Phe,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577043,https://www.ncbi.nlm.nih.gov/clinvar/variation/53391"
+I618T,117592020,117592020,c.1853T>C,p.Ile618Thr,c.1853T>C,p.Ile618Thr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046494
+K68X,117509071,117509071,c.202A>G,p.Lys68Glu,c.202A>T,p.Lys68X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577254
+K710X,117592295,117592295,c.2128A>T,p.Lys710Ter,c.2128A>T,p.Lys710X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001826446.1
+L102R,117530930,117530930,c.305T>G,p.Leu102Arg,c.305T>G,p.Leu102Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000669903
+L1065P,117611635,117611635,c.3194T>C,p.Leu1065Pro,c.3194T>C,p.Leu1065Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004297.1
+L1077P,117611671,117611671,c.3230T>C,p.Leu1077Pro,c.3230T>C,p.Leu1077Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056377
+L1254X,117642481,117642481,c.3761T>G,p.Leu1254Ter,c.3761T>G,p.Leu1254X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046973.4
+L1324P,117664695,117664695,c.3971T>C,p.Leu1324Pro,c.3971T>C,p.Leu1324Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047048
+L1335P,117664728,117664728,c.4004T>C,p.Leu1335Pro,c.4004T>C,p.Leu1335Pro,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000047055,https://www.ncbi.nlm.nih.gov/clinvar/variation/53872"
+L138ins,117531037,117531036,c.413_415dup,p.Leu138dup,c.413_415dupTAC,p.Leu138dup,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577362
+L1480P,117531068,117531068,c.443T>C,p.Ile148Thr,c.4439T>C,p.Leu1480Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047138
+L15P,117480138,117480138,c.44T>C,p.Leu15Pro,c.44T>C,p.Leu15Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000785636
+L165S,117610610,117610610,c.3080T>C,p.Ile1027Thr,c.494T>C,p.Leu165Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029515
+L206W,117535285,117535285,c.617T>G,p.Leu206Trp,c.617T>G,p.Leu206Trp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007611
+L218X,117535321,117535321,c.653T>A,p.Leu218Ter,c.653T>A,p.Leu218X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047229
+L227R,117535348,117535348,c.680T>G,p.Leu227Arg,c.680T>G,p.Leu227Arg,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000047234,https://www.ncbi.nlm.nih.gov/clinvar/variation/54040"
+L346P,117540267,117540267,c.1037T>C,p.Leu346Pro,c.1037T>C,p.Leu346Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576945
+L453S,117548789,117548789,c.1358T>C,p.Leu453Ser,c.1358T>C,p.Leu453Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000785638
+L467P,117559471,117559471,c.1400T>C,p.Leu467Pro,c.1400T>C,p.Leu467Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029476
+L558S,117587827,117587827,c.1673T>C,p.Leu558Ser,c.1673T>C,p.Leu558Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029483.5
+L732X,117592362,117592362,c.2195T>G,p.Leu732Ter,c.2195T>G,p.Leu732X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056360.5
+L88X,117509132,117509132,c.263T>G,p.Leu88Ter,c.263T>A or c.263T>G,p.Leu88X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046644
+L927P,117603654,117603654,c.2780T>C,p.Leu927Pro,c.2780T>C,p.Leu927Pro,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056371,https://www.ncbi.nlm.nih.gov/clinvar/variation/53568"
+L967S,117603774,117603774,c.2900T>C,p.Leu967Ser,c.2900T>C,p.Leu967Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000206091
+M1101K,117611743,117611743,c.3302T>A,p.Met1101Lys,c.3302T>A,p.Met1101Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000032712
+M1101R,117611743,117611743,c.3302T>G,p.Met1101Arg,c.3302T>G,p.Met1101Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000508206.1
+M1V,117480095,117480095,c.1A>G,p.Met1Val,c.1A>G,p.Met1Val,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056356.7
+M265R,117536598,117536598,c.794T>G,p.Met265Arg,c.794T>G,p.Met265Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047254
+M952T,117603729,117603729,c.2855T>C,p.Met952Thr,c.2855T>C,p.Met952Thr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046702.13
+N1303K,117652877,117652877,c.3909C>G,p.Asn1303Lys,c.3909C>G,p.Asn1303Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007556
+P205S,117535281,117535281,c.613C>T,p.Pro205Ser,c.613C>T,p.Pro205Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004442
+P574H,117590394,117590394,c.1721C>A,p.Pro574His,c.1721C>A,p.Pro574His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007539
+P5L,117480108,117480108,c.14C>T,p.Pro5Leu,c.14C>T,p.Pro5Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004225
+P67L,117509069,117509069,c.200C>T,p.Pro67Leu,c.200C>T,p.Pro67Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056357
+P750L,117592416,117592416,c.2249C>T,p.Pro750Leu,c.2249C>T,p.Pro750Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000675059.3
+P99L,117530921,117530921,c.296C>T,p.Pro99Leu,c.296C>T,p.Pro99Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV001009535
+Q1035X,117610633,117610633,c.3103C>T,p.Gln1035X;,c.3103C>T,p.Gln1035X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046781
+Q1042X,117610654,117610654,c.3124C>T,p.Gln1042Ter,c.3124C>T,p.Gln1042X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000576454,https://www.ncbi.nlm.nih.gov/clinvar/variation/53654"
+Q1291H,117642593,117642593,c.3873G>C,p.Gln1291His,c.3873G>C,p.Gln1291His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007572
+Q1291R,117642592,117642592,c.3872A>G,p.Gln1291Arg,c.3872A>G,p.Gln1291Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000664625.1
+Q1313X,117652905,117652905,c.3937CT,p.Gln1313Ter,c.3937C>T,p.Gln1313X,https://www.ncbi.nlm.nih.gov/clinvar/variation/7180
+Q1382X,117665466,117665466,c.4144C>T,p.Gln1382Ter,c.4144C>T,p.Gln1382X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047087
+Q1411X,117665553,117665553,c.4231C>T,p.Gln1411Ter,c.4231C>T,p.Gln1411X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047110
+Q1412X,117665556,117665556,c.4234C>T,p.Gln1412Ter,c.4234C>T,p.Gln1412X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047111
+Q1476X,117667091,117667091,c.4426C>T,p.Gln1476Ter,c.4426C>T,p.Gln1476X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047135
+Q220X,117535326,117535326,c.658C>T,p.Gln220Ter,c.658C>T,p.Gln220X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056401
+Q237E,117535377,117535377,c.709C>G,p.Gln237Glu,c.709C>G,p.Gln237Glu,https://www.ncbi.nlm.nih.gov/clinvar/RCV001193074.1
+Q290X,117536672,117536672,c.868C>T,p.Gln290Ter,c.868C>T,p.Gln290X,https://www.ncbi.nlm.nih.gov/clinvar/24358895
+Q2X,117480098,117480098,c.4C>T,p.Gln2Ter,c.4C>T,p.Gln2X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576848
+Q2X;R3W,117480098,117480098,c.4C>T,p.Gln2Ter,c.[4C>T;7A>T],p.[Gln2X;Arg3Trp],https://www.ncbi.nlm.nih.gov/clinvar/RCV000576848
+Q30X,117504287,117504287,c.88CT,p.Gln30Ter,c.88C>T,p.Gln30X,https://www.ncbi.nlm.nih.gov/clinvar/variation/54081
+Q353X,117540287,117540287,no_ncbi,p.Gln353Ter,c.1057C>T,p.Gln353X,",https://www.ncbi.nlm.nih.gov/clinvar/variation/53175"
+Q359R,117540306,117540306,c.1076AG,p.Gln359Arg,c.1076A>G,p.Gln359Arg,https://www.ncbi.nlm.nih.gov/clinvar/variation/53181
+Q39X,117504314,117504314,c.115C>T,p.Gln39Ter,c.115C>T,p.Gln39X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000781224
+Q414X,117548671,117548671,c.1240C>T,p.Gln414Ter,c.1240C>T,p.Gln414X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001831724.2
+Q493X,117559548,117559548,c.1477C>T,p.Gln493Ter,c.1477C>T,p.Gln493X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007526
+Q525X,117559644,117559644,c.1573C>T,p.Gln525Ter,c.1573C>T,p.Gln525X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046342
+Q552X,117587808,117587808,c.1654C>T,p.Gln552Ter,c.1654C>T,p.Gln552X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007622
+Q685X,117592220,117592220,c.2053C>T,p.Gln685Ter,c.2053C>T,p.Gln685X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046532.4
+Q715X,117592310,117592310,c.2143C>T,p.Gln715Ter,c.2143C>T,p.Gln715X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576466
+Q720X,117548795,117548795,c.1364C>T,p.Ala455Val,c.2158C>T,p.Gln720X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000474081
+Q890X,117603542,117603542,c.2668C>T,p.Gln890Ter,c.2668C>T,p.Gln890X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007625
+Q98R,117530918,117530918,c.293A>G,p.Gln98Arg,c.293A>G,p.Gln98Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004424.1
+Q98X,117530917,117530917,c.292C>T,p.Gln98Ter,c.292C>T,p.Gln98X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000781254
+R1066C,117611637,117611637,c.3196C>T,p.Arg1066Cys,c.3196C>T,p.Arg1066Cys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007582.11
+R1066H,117611638,117611638,c.3197G>A,p.Arg1066His,c.3197G>A,p.Arg1066His,https://www.ncbi.nlm.nih.gov/clinvar/103732691
+R1070Q,117611650,117611650,c.3209G>A,p.Arg1070Gln,c.3209G>A,p.Arg1070Gln,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046825
+R1070W,117611649,117611649,c.3208C>T,p.Arg1070Trp,c.3208C>T,p.Arg1070Trp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000757802
+R1102X,117611745,117611745,c.3304AT,p.Arg1102Ter,c.3304A>T,p.Arg1102X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53713
+R1128X,117614627,117614627,c.3382A>G,p.Arg1128Gly,c.3382A>T,p.Arg1128X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000301584.1
+R1158X,117627525,117627525,c.3472C>T,p.Arg1158Ter,c.3472C>T,p.Arg1158X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007564
+R1162X,117627537,117627537,c.3484C>T,p.Arg1162Ter,c.3484C>T,p.Arg1162X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004500
+R117C,117530974,117530974,c.349C>T,p.Arg117Cys,c.349C>T,p.Arg117Cys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056382
+R117G,117530974,117530974,c.349C>G,p.Arg117Gly,c.349C>G,p.Arg117Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000670642
+R117H,117530975,117530975,c.350G>A,p.Arg117His,c.350G>A,p.Arg117His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007528
+R117L,117530975,117530975,c.350G>T,p.Arg117Leu,c.350G>T,p.Arg117Leu,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577295,https://www.ncbi.nlm.nih.gov/clinvar/variation/53765"
+R117P,117530975,117530975,c.350G>C,p.Arg117Pro,c.350G>C,p.Arg117Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577567
+R1283M,117642568,117642568,c.3848G>T,p.Arg1283Met,c.3848G>T,p.Arg1283Met,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007587
+R258G,117536576,117536576,c.772A>G,p.Arg258Gly,c.772A>G,p.Arg258Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047251
+R31L,117504291,117504291,c.92G>T,p.Arg31Leu,c.92G>T,p.Arg31Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577473
+R334L,117540231,117540231,c.1001GT,p.Arg334Leu,c.1001G>T,p.Arg334Leu,https://www.ncbi.nlm.nih.gov/clinvar/variation/53160
+R334Q,117540231,117540231,c.1001G>A,p.Arg334Gln,c.1001G>A,p.Arg334Gln,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046192.8
+R334W,117540230,117540230,c.1000C>T,p.Arg334Trp,c.1000C>T,p.Arg334Trp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007559
+R347H,117540270,117540270,c.1040G>A,p.Arg347His,c.1040G>A,p.Arg347His,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007602
+R347P,117540270,117540270,c.1040G>C,p.Arg347Pro,c.1040G>C,p.Arg347Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007530
+R352Q,117540285,117540285,c.1055G>A,p.Arg352Gln,c.1055G>A,p.Arg352Gln,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007619
+R352W,117540284,117540284,c.1054C>T,p.Arg352Trp,c.1054C>T,p.Arg352Trp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000506190
+R553X,117587811,117587811,c.1657C>T,p.Arg553Ter,c.1657C>T,p.Arg553X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007542
+R560K,117587833,117587833,c.1679G>A,p.Arg560Lys,c.1679G>A,p.Arg560Lys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007576
+R560S,117590353,117590353,c.1680A>C,p.Arg560Ser,c.1680A>C,p.Arg560Ser,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576677
+R560T,117587833,117587833,c.1679G>C,p.Arg560Thr,c.1679G>C,p.Arg560Thr,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007533
+R709X,117592292,117592292,c.2125C>T,p.Arg709*,c.2125C>T,p.Arg709X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056359
+R74W,117509089,117509089,c.220C>T,p.Arg74Trp,c.220C>T,p.Arg74Trp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000177071
+R75X,117509092,117509092,c.223C>T,p.Arg75Ter,c.223C>T,p.Arg75X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004232.1
+R764X,117592457,117592457,c.2290C>T,p.Arg764Ter,c.2290C>T,p.Arg764X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056363
+R785X,117592520,117592520,c.2353C>T,p.Arg785Ter,c.2353C>T,p.Arg785X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046582.6
+R792X,117592541,117592541,c.2374C>T,p.Arg792Ter,c.2374C>T,p.Arg792X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004475.1
+R851X,117594990,117594990,c.2551C>T,p.Arg851Ter,c.2551C>T,p.Arg851X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007561
+R933G,117603671,117603671,c.2797A>G,p.Arg933Gly,c.2797A>G,p.Arg933Gly,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577327.4,https://www.ncbi.nlm.nih.gov/clinvar/variation/53569"
+S1118F,117611794,117611794,c.3353C>T,p.Ser1118Phe,c.3353C>T,p.Ser1118Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577360.2
+S1159F,117627529,117627529,c.3476C>T,p.Ser1159Phe,c.3476C>T,p.Ser1159Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577354.4
+S1159P,117627528,117627528,c.3475T>C,p.Ser1159Pro,c.3475T>C,p.Ser1159Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046907
+S1196X,117627640,117627640,c.3587C>G,p.Ser1196Ter,c.3587C>G,p.Ser1196X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000056383,https://www.ncbi.nlm.nih.gov/clinvar/variation/48674"
+S1251N,117642472,117642472,c.3752G>A,p.Ser1251Asn,c.3752G>A,p.Ser1251Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007638
+S1255P,117642483,117642483,c.3763T>C,p.Ser1255Pro,c.3763T>C,p.Ser1255Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007613
+S1255X,117642484,117642484,c.3764C>A,p.Ser1255Ter,c.3764C>A,p.Ser1255X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007545
+S13F,117480132,117480132,c.38C>T,p.Ser13Phe,c.38C>T,p.Ser13Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577001
+S1455X,117667029,117667029,c.4364C>G,p.Ser1455Ter,c.4364C>G,p.Ser1455X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000590108
+S341P,117540251,117540251,c.1021T>C,p.Ser341Pro,c.1021T>C,p.Ser341Pro,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004248
+S434X,174567902,174567902,c.1301CG,p.Ser434Ter,c.1301C>A or c.1301C>G,p.Ser434X,https://www.ncbi.nlm.nih.gov/clinvar/variation/30266
+S466X,117559468,117559468,c.1397C>G,p.Ser466Ter,c.1397C>A or c.1397C>G,p.Ser466X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029475
+S489X,117559537,117559537,c.1466C>A,p.Ser489Ter,c.1466C>A,p.Ser489X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056349
+S492F,117559546,117559546,c.1475C>T,p.Ser492Phe,c.1475C>T,p.Ser492Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007575
+S4X,117480105,117480105,c.11C>A,p.Ser4Ter,c.11C>A,p.Ser4X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046255.7
+S549N,117587800,117587800,c.1646G>A,p.Ser549Asn,c.1646G>A,p.Ser549Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007536
+S549R,117587801,117587801,c.1647T>G,p.Ser549Arg,c.1645A>C or  c.1647T>G or c.1647T>A,p.Ser549Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004466
+S912L,117603609,117603609,c.2735C>T,p.Ser912Leu,c.2735C>T,p.Ser912Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000506704
+S912X,117603609,117603609,c.2735C>A,p.Ser912Leu,c.2735C>A,p.Ser912X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000046665,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007626"
+S945L,117603708,117603708,c.2834C>T,p.Ser945Leu,c.2834C>T,p.Ser945Leu,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056372
+S977F,117606695,117606695,c.2930C>T,p.Ser977Phe,c.2930C>T,p.Ser977Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000780158
+T1036N,117610637,117610637,c.3107C>A,p.Thr1036Asn,c.3107C>A,p.Thr1036Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577654.3
+T1246I,117642457,117642457,c.3737C>T,p.Thr1246Ile,c.3737C>T,p.Thr1246Ile,https://www.ncbi.nlm.nih.gov/clinvar/RCV000781266
+T338I,117540243,117540243,c.1013C>T,p.Thr338Ile,c.1013C>T,p.Thr338Ile,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007614.14
+V1153E,117614703,117614703,c.3458T>A,p.Val1153Glu,c.3458T>A,p.Val1153Glu,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000577089.2,https://www.ncbi.nlm.nih.gov/clinvar/variation/53747"
+V1240G,117642439,117642439,c.3719T>G,p.Val1240Gly,c.3719T>G,p.Val1240Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV000577207.3
+V201M,117535269,117535269,c.601G>A,p.Val201Met,c.601G>A,p.Val201Met,https://www.ncbi.nlm.nih.gov/clinvar/RCV000666392.5
+V232D,117535363,117535363,c.695T>A,p.Val232Asp,c.695T>A,p.Val232Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000047235
+V456A,117548798,117548798,c.1367T>C,p.Val456Ala,c.1367T>C,p.Val456Ala,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004447
+V520F,117559629,117559629,c.1558G>T,p.Val520Phe,c.1558G>T,p.Val520Phe,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007570
+W1089X,117611707,117611707,c.3266G>A,p.Trp1089Ter,c.3266G>A,p.Trp1089X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007615
+W1098C,117611735,117611735,c.3294G>T,p.Trp1098Cys,c.3294G>C or c.3294G>T,p.Trp1098Cys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000757800
+W1098R,117611733,117611733,c.3292T>C,p.Trp1098Arg,c.3292T>C,p.Trp1098Arg,https://www.ncbi.nlm.nih.gov/clinvar/RCV000985688
+W1098X,117611734,117611734,c.3293G>A,p.Trp1098Ter,c.3293G>A or c.3294G>A,p.Trp1098X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046855
+W1145X,117614680,117614680,c.3435GA,p.Trp1145Ter,c.3435G>A,p.Trp1145X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53741
+W1204X,117627664,117627664,c.3611G>AMANE,p.Trp1204Ter,c.3611G>A or c.3612G>A,p.Trp1204X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007633
+W1274X,117642542,117642542,c.3822GA,p.Trp1274Ter,c.3822G>A,p.Trp1274X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53817
+W1282X,117642566,117642566,c.3846G>A,p.Trp1282Ter,c.3846G>A,p.Trp1282X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007549
+W1310X,117611650,117611650,c.3209G>A,p.Arg1070Gln,c.3929G>A,p.Trp1310X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046825
+W19X,117504256,117504256,c.57G>A,p.Trp19Ter,c.57G>A,p.Trp19X,"https://www.ncbi.nlm.nih.gov/clinvar/RCV001283974,https://www.ncbi.nlm.nih.gov/clinvar/variation/487391"
+W216X,117535315,117535315,c.647GA,p.Trp216Ter,c.647G>A,p.Trp216X,https://www.ncbi.nlm.nih.gov/clinvar/variation/54033
+W401X,117542102,117542102,c.1203G>A,p.Trp401Ter,c.1202G>A or c.1203G>A,p.Trp401X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056344
+W496X,117559558,117559558,c.1487G>A,p.Trp496Ter,c.1487G>A,p.Trp496X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000576357
+W57G,117509038,117509038,c.169T>G,p.Trp57Gly,c.169T>G,p.Trp57Gly,https://www.ncbi.nlm.nih.gov/clinvar/RCV001009532.1
+W57X,117509039,117509039,c.170G>A,p.Trp57Ter,c.170G>A or c.171G>A,p.Trp57X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046437.4
+W846X,117594976,117594976,c.2537G>AMANE,p.Trp846Ter,c.2537G>A or c.2538G>A,p.Trp846X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056367
+W882X,117602851,117602851,c.2645GA,p.Trp882Ter,c.2645G>A,p.Trp882X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53535
+Y1014C,117610571,117610571,c.3041A>G,p.Tyr1014Cys,c.3041A>G,p.Tyr1014Cys,https://www.ncbi.nlm.nih.gov/clinvar/RCV000987964.3
+Y1032C,117610625,117610625,c.3095A>G,p.Tyr1032Cys,c.3095A>G,p.Tyr1032Cys,"https://www.ncbi.nlm.nih.gov/clinvar/RCV000029516.8,https://www.ncbi.nlm.nih.gov/clinvar/variation/35861"
+Y1092X,117611717,117611717,c.3276C>A,p.Tyr1092Ter,c.3276C>A or c.3276C>G,p.Tyr1092X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056379
+Y109X,117530952,117530952,c.327TA,p.Tyr109Ter,c.327T>A,p.Tyr109X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53702
+Y122X,117530991,117530991,c.366T>A,p.Tyr122Ter,c.366T>A,p.Tyr122X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000056385.5
+Y161D,117531106,117531106,c.481T>G,p.Tyr161Asp,c.481T>G,p.Tyr161Asp,https://www.ncbi.nlm.nih.gov/clinvar/24358794
+Y275X,117536629,117536629,c.825C>G,p.Tyr275Ter,c.825C>G,p.Tyr275X,https://www.ncbi.nlm.nih.gov/clinvar/RCV001004239.1
+Y563D,117590360,117590360,c.1687T>A,p.Tyr563Asn,c.1687T>G,p.Tyr563Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007534.9
+Y563N,117590360,117590360,c.1687T>A,p.Tyr563Asn,c.1687T>A,p.Tyr563Asn,https://www.ncbi.nlm.nih.gov/clinvar/RCV000007534.9
+Y563X,117590362,117590362,c.1689CA,p.Tyr563Ter,c.1689C>A,p.Tyr563X,https://www.ncbi.nlm.nih.gov/clinvar/variation/2136602
+Y569D,117590378,117590378,c.1705T>G,p.Tyr569Asp,c.1705T>G,p.Tyr569Asp,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046434
+Y577X,117590404,117590404,c.1731C>T,p.Tyr577=,c.1731C>A,p.Tyr577X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000029487
+Y849X,117594986,117594986,c.2547CA,p.Tyr849Ter,c.2547C>A,p.Tyr849X,https://www.ncbi.nlm.nih.gov/clinvar/variation/53509
+Y913X,117603613,117603613,c.2739T>A,p.Tyr913Ter,c.2739T>A,p.Tyr913X,https://www.ncbi.nlm.nih.gov/clinvar/RCV000046670
