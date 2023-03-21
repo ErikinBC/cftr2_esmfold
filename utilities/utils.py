@@ -6,11 +6,36 @@ import os
 import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
+from difflib import get_close_matches
+
 
 def try2df(x) -> pd.DataFrame:
     if not isinstance(x, pd.DataFrame):
         x = pd.DataFrame(x)
     return x
+
+
+def find_closest_match(x:str, y:list, delta:float=0.05) -> tuple[str, int]:
+    """
+    Find the closest match in a list (or Series) y to a string x. Will do a reverse search of tolerance - delta*iteration under an apporximate match is found.
+
+    Returns
+    -------
+    A tuple where the first position is the best match, and the second is the cutoff-tolerance used
+    """
+    res = []
+    a_seq = np.linspace(0, 1, int(1/delta)+1)[::-1]
+    i = 0
+    while len(res) == 0:
+        a_seq_i = a_seq[i]
+        tmp = get_close_matches(x, y, n=1, cutoff=a_seq_i)
+        if len(tmp) == 1:
+            res.append(tmp[0])
+        i += 1
+    res.append(a_seq_i)
+    return res
+
+
 
 def force_identical_dfs(df1:pd.DataFrame, df2: pd.DataFrame):
     """

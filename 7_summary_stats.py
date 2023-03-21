@@ -18,7 +18,7 @@ import plotnine as pn
 from mizani.formatters import percent_format
 # Local modules
 from parameters import alpha, n_boot, dir_data, dir_figures
-from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map
+from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match
 from utilities.processing import di_ylbl, di_category, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
 
 # For multiindex slicing
@@ -47,6 +47,57 @@ df_cftr2.rename(columns={'cDNA_name':'cDNA'}, inplace=True)
 # (iv) Load the y data
 path_ydata = os.path.join(dir_data, 'y_label.csv')
 df_ydata = pd.read_csv(path_ydata, header=[0,1,2], index_col=[0,1,2])
+
+# (v) Load the univariate and bivariate data
+df_uni = pd.read_csv(os.path.join(dir_data, 'cftr2_uni.csv'))
+df_comb = pd.read_csv(os.path.join(dir_data, 'cftr2_comb.csv'))
+
+# (vi) Load in the CFTR1 database
+di_cftr1 = {'cDNA Name':'cDNA_name', 'Protein Name':'protein_name', 'Legacy Name':'mutation', 'Region':'region'}
+df_cftr1 = pd.read_csv(os.path.join(dir_data, 'cftr1.csv'))
+df_cftr1 = df_cftr1[list(di_cftr1)].rename(columns=di_cftr1)
+df_cftr1 = df_cftr1.drop_duplicates().reset_index(drop=True)
+
+# (vii) Print the data differences in mutation history
+u_uni_muts = pd.Series(df_uni['mutation'].dropna().unique())
+u_uni_cDNA = pd.Series(df_uni['cDNA_name'].dropna().unique())
+u_cftr1_muts = pd.Series(df_cftr1['mutation'].dropna().unique())
+u_cftr1_cDNA = pd.Series(df_cftr1['cDNA_name'].dropna().unique())
+# Check that comb is a subset of uni
+assert pd.Series(df_comb['mutation1'].unique()).isin(u_uni_muts).all(), 'combination should be a subset of uni'
+assert pd.Series(df_comb['mutation2'].unique()).isin(u_uni_muts).all(), 'combination should be a subset of uni'
+# Do a fuzzy match
+tmp_match_muts = u_uni_muts.apply(lambda x: find_closest_match(x, u_cftr1_muts))
+tmp_match_muts.index = u_uni_muts
+tmp_match_cDNA = u_uni_cDNA.apply(lambda x: find_closest_match(x, u_cftr1_cDNA))
+tmp_match_cDNA.index = u_uni_cDNA
+tmp_match = pd.concat(objs=[tmp_match_muts.reset_index().assign(tt='mutation'), tmp_match_cDNA.reset_index().assign(tt='cDNA_name')],axis=0).rename(columns={0:'tmp'})
+tmp_match = tmp_match.assign(match=lambda x: x['tmp'].str[0], cutoff=lambda x: x['tmp'].str[1]).drop(columns='tmp')
+tmp_match = df_uni.groupby(['mutation','cDNA_name']).size().reset_index().drop(columns=0).rename_axis('idx').melt(value_name='index',var_name='tt',ignore_index=False).reset_index().merge(tmp_match, 'left')
+# Match below 80 are all noise (.assign(match=lambda x: np.where(x['cutoff'] < 0.8, np.nan, x['match'])))
+matchable_mutations = tmp_match.rename(columns={'index':'ref'}).pivot('idx','tt',['ref','match','cutoff'])
+# Unless there is one 100% match, we will treat it is as missing
+matchable_mutations.columns.names = ['msr', 'tt']
+matchable_mutations = matchable_mutations.loc[matchable_mutations.loc[:,idx['cutoff']].max(1) == 1]
+# If the cDNA is 100% use it, otherwise rely on mutation
+idx_cDNA = matchable_mutations.loc[:,idx['cutoff','cDNA_name']] == 1
+cDNA_matchable = matchable_mutations.loc[idx_cDNA,idx['match','cDNA_name']]
+muts_matchable = matchable_mutations.loc[~idx_cDNA,idx['match','mutation']]
+n_cDNA_matchable, n_muts_matchable = len(cDNA_matchable), len(muts_matchable)
+n_matchable = n_cDNA_matchable + n_muts_matchable
+print(f'A total of {n_matchable} mutations from CFTR2 can be linked to CFTR1 ({n_cDNA_matchable} by cDNA name, and {n_muts_matchable} by legacy name), meaning {len(u_uni_cDNA)-n_matchable} cannot be matched')
+# Determine which CFTR1 have CFTR2 matches
+tmp1 = df_cftr1[df_cftr1['mutation'].isin(muts_matchable)]
+assert tmp1['mutation'].nunique() == n_muts_matchable, 'Expected a 1:1 match'
+tmp2 = df_cftr1[df_cftr1['cDNA_name'].isin(cDNA_matchable)]
+assert tmp2['cDNA_name'].nunique() == n_cDNA_matchable, 'Expected a 1:1 match'
+tmp3 = pd.concat(objs=[tmp1, tmp2]).assign(cftr2=True)
+tmp4 = df_cftr1[~df_cftr1.index.isin(tmp3.index)].assign(cftr2=False)
+df_cftr12 = pd.concat(objs=[tmp3, tmp4], axis=0).reset_index(drop=True)
+# Cleap up the region/exon
+df_cftr12['region'] = df_cftr12['region'].str.split('\\s').str[0].fillna('missing')
+print(df_cftr12.groupby(['cftr2','region']).size())
+
 
 
 ############################
