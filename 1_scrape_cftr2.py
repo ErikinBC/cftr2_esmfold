@@ -15,16 +15,21 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--scrape_variants', action='store_true', help="Whether the single SNP variant data should be scraped (unless this flag is present, this won't be scraped)")
 parser.add_argument('--scrape_combinations', action='store_true', help="Whether the two-SNP variant data should be scraped (unless this flag is present, this won't be scraped)")
+parser.add_argument('--scrape_cftr1', action='store_true', help="Whether the CFTR database should be scraped to get a unique list of mutations that have ever been discovered")
 parser.add_argument('--num_variants', type=int, default=1500, help='Number of variant combinations to scrape for the combinations (default==1500)')
 args = parser.parse_args()
 scrape_variants = args.scrape_variants
 scrape_combinations = args.scrape_combinations
+scrape_cftr1 = args.scrape_cftr1
 num_variants = args.num_variants
 print(f'Scraping variants: {scrape_variants}')
 print(f'Scraping combinations: {scrape_combinations}')
+print(f'Scraping CFTR1 database: {scrape_cftr1}')
+print(f'Number of variants: {num_variants}')
 
 # External modules
 import os
+import re
 import requests
 import numpy as np
 import pandas as pd
@@ -35,7 +40,6 @@ from itertools import combinations
 # Internal modules
 from parameters import dir_data
 from utilities.utils import merge_html_tables, merge_frame_with_existing
-
 
 
 ##################################################
@@ -85,6 +89,7 @@ dat_variants = pd.read_excel(path_excel, skiprows=10)
 di_rename = {"Variant cDNA name\n(ordered 5' to 3')":'cDNA_name', 'Variant protein name':'protein_name', 'Variant legacy name':'legacy_name', '# alleles in CFTR2':'num_alleles', 'Allele frequency in CFTR2\n(of 142,036 identified variants)*':'allele_freq', '% pancreatic insufficient (patients with variant in trans with ACMG-PI variant, with variant in homozygosity, or with another variant expected to lead to no CFTR protein production)':'pct_PI'}
 dat_variants = dat_variants[list(di_rename)].rename(columns=di_rename)
 dat_variants = dat_variants[dat_variants.notnull().mean(1) == 1]
+dat_variants.to_csv(os.path.join(dir_data, 'mutation_history.csv'), index=False)
 
 legacy_not_json = list(np.setdiff1d(dat_variants['legacy_name'].unique(), json_mutations))
 json_not_legacy = list(np.setdiff1d(json_mutations, dat_variants['legacy_name'].unique()))
@@ -185,4 +190,71 @@ else:
     df_comb = pd.read_csv(path_comb)
 
 s.close()
+
+
+##################################
+### --- (5) CFTR1 DATABASE --- ###
+
+# Define URLs
+base_url = 'http://www.genet.sickkids.on.ca/'
+url = base_url + 'SearchPage,$Form.direct'
+
+# Payload from the Request URL: http://www.genet.sickkids.on.ca/SearchPage,$Form.direct
+payload = {'formids':'PropertySelection,mutationSearchValue',
+           'seedids':'ZH4sIAAAAAAAAAFvzloG1vI6hRqc4tagsMzlVxUCnIDEdRCXn5xbk56XmlYDZeSWJmXmpRUB2cWpxcWZ+HohVACSc8otSwOLBGak5OWCBlEogFQA0xSczLxvIdMxKrAguSSwpLQZyglLzgOqhitzyi3JVDADDTn+1hAAAAA==',
+           'submitmode':'',
+           'submitname':'',           
+           'PropertySelection':'position',
+           'mutationSearchValue':''}  # Will vary over the loop
+
+if scrape_cftr1:
+    print('Scraping CFTR1 database')
+    # Since there are 1480 amino acids, we expect up to ~4500 position locations
+    n_pos = 4500
+    holder = []
+    stime = time()
+    for i in range(1, n_pos+1):
+        payload['mutationSearchValue'] = str(i)
+        if (i+1) % 5 == 0:
+            print(f'Iteration {i+1} of {n_pos}\nNumber of results={len(holder)}')
+            dtime, nleft = time() - stime, n_pos - (i+1)
+            rate = (i+1) / dtime
+            meta = (nleft / rate) / 60
+            print(f'ETA = {meta:.1f} minutes remaining')
+        s = requests.Session()
+        r = s.post(url, data=payload)
+        assert r.status_code == 200, 'Status code suggests failure'
+        if 'Consequence' in r.text:
+            soup = BeautifulSoup(r.text)
+            # Should be the last table in the list
+            soup_tbl = soup.find_all('table')[-1]
+            # Each row should be associated with a different <tr>
+            tbl_rows = soup_tbl.find_all('tr')
+            # Get the column headers
+            cols = tbl_rows[0].text.replace('\n',',').replace('\r','')
+            cols = re.sub(r'^\,|\,$','',re.sub(r'\,{1,}',',',cols)).split(',')
+            assert len(cols) == 6, 'Expected 6 columns'
+            # Process the rows
+            rows = [r.find_all('td') for r in tbl_rows[1:]]
+            assert all([len(r)==6 for r in rows]), 'Expected 6 columns per row'
+            # Clean each row up
+            rows = [pd.Series([c.text for c in r]).str.replace('\\n|\\r|\\t','',regex=True).str.replace('\\s{2,}','',regex=True).str.strip().to_list() for r in rows]
+            # Combine into a DF
+            df = pd.DataFrame.from_records(rows,columns=cols)
+            # Add on the URLs
+            links = [base_url + a['href'] for a in soup_tbl.find_all('a', href=True)]
+            cDNA_names = pd.Series([a.text.replace('\r','').replace('\t','').replace('\n','') for a in soup_tbl.find_all('a', href=True)]).str.strip()
+            assert len(links) == len(df), 'links does not align with rows'
+            assert (df['cDNA Name'] == cDNA_names).all(), 'cDNA name does not align'
+            df.insert(df.shape[1], 'url', links)
+            holder.append(df)
+        s.close()
+        # Pause for 0.5-1.5 seconds
+        sleep(np.random.rand() + 0.5)
+    # Merge and save results
+    dat_cftr1 = pd.concat(holder).reset_index(drop=True)
+    print(f'A total of {len(dat_cftr1)} mutations found')
+    dat_cftr1.to_csv(os.path.join(dir_data, 'cftr1.csv'),index=False)
+
+
 print('~~~ End of 1_scrape_cftr2.py ~~~')
