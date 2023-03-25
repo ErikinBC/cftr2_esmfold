@@ -18,7 +18,7 @@ import plotnine as pn
 from mizani.formatters import percent_format
 # Local modules
 from parameters import alpha, n_boot, dir_data, dir_figures
-from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match
+from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match, find_unique_combinations
 from utilities.processing import di_ylbl, di_category, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
 
 # For multiindex slicing
@@ -58,7 +58,57 @@ df_cftr1 = pd.read_csv(os.path.join(dir_data, 'cftr1.csv'))
 df_cftr1 = df_cftr1[list(di_cftr1)].rename(columns=di_cftr1)
 df_cftr1 = df_cftr1.drop_duplicates().reset_index(drop=True)
 
-# (vii) Print the data differences in mutation history
+# (vii) Load in the up-to-date xlsx file
+df_muthist = pd.read_csv(os.path.join(dir_data, 'mutation_history.csv'))
+df_muthist = df_muthist.assign(in_uni=lambda x: x['legacy_name'].isin(df_uni['mutation'].unique()))
+
+
+#####################################
+# --- (2) PRINT DATASET NUMBERS --- #
+
+# --- (i) Number of CFTR2 mutations --- #
+# Total count
+n_uni = df_uni['mutation'].nunique()
+print(f"There a total of {n_uni} mutations that were scraped from CFTR2")
+# Which actually have labels
+print('What percent had some clinical data:')
+uni_has_val = df_uni.groupby(['msr','mutation']).apply(lambda x: x['value'].replace('insufficient data',np.nan).notnull().any())
+print(uni_has_val.groupby('msr').agg({'sum','count'}))
+print('\n')
+assert len(np.setdiff1d(df_uni['mutation'].unique(),df_muthist['legacy_name'])) == 0, 'Scraped variants should be found in mutation history xlsx file'
+# Compare the number scraped to the total available in the mutation_history xlsx file
+print('Breakdown of variants there were scraped compared to mutation history file')
+print(df_muthist['in_uni'].value_counts())
+print(df_muthist.groupby(['in_uni','cf_causing'])['num_alleles'].agg({'count','mean','median','max'}).round(0).astype(int))
+print('\n')
+missing_cf_causing_muts = df_muthist.query('~in_uni & cf_causing!="Non CF-causing"')['legacy_name']
+print(f'A total of {len(missing_cf_causing_muts)} mutations were missed from the scrape:')
+print("\n".join(missing_cf_causing_muts))
+print('\n')
+
+# Get the number of combinations
+n_comb = df_comb.groupby(['mutation1','mutation2']).size().reset_index().drop(columns=0)
+n_comb = find_unique_combinations(n_comb, 'mutation1', 'mutation2', keep_ukey=True)
+n_comb_homo = n_comb.query('mutation1 == mutation2')
+n_comb_f508 = n_comb[n_comb['ukey'].str.contains("F508del")]
+print(f"There a total of {n_comb.shape[0]} mutation pairs that were scraped from CFTR2, {n_comb_f508.shape[0]} are F508 combinations and {n_comb_homo.shape[0]} and homozygous\n")
+
+
+# --- (ii) Small cell censoring --- #
+n_data_muts = df_uni.query('msr=="mutant"').groupby('mutation')[['num_alleles','n_pat']].agg('max').astype(int).reset_index()
+n_data_muts = n_data_muts.merge(uni_has_val.xs('mutant').reset_index().rename(columns={0:'has_val'}))
+n_data_muts = n_data_muts.assign(has_val=lambda x: x['has_val'].astype(str)).pivot_table(['num_alleles','n_pat'],None,'has_val',['min','max','count'])
+n_data_muts = n_data_muts.reorder_levels(['has_val',None],1).loc[:,idx[['False','True']]]
+print('There appears to be a small-cell censoring of <=5')
+print(n_data_muts)
+
+# Repeat for combinations
+n_data_comb = df_comb.query('msr=="mutant"').replace('insufficient data',np.nan).groupby(['mutation1','mutation2'])['value'].apply(lambda x: x.notnull().any()).reset_index()
+n_data_comb_f508del = (n_data_comb.set_index('value') == 'F508del').any(1).groupby('value').sum()
+print(f'Out of the {n_data_comb.shape[0]} paired mutants, {n_data_comb["value"].sum()} have at least one label, on which {n_data_comb_f508del.loc[True]} have F508del (out of {n_data_comb_f508del.sum()})')
+
+
+# --- (iii) Differences of mutation history to CFTR1 --- #
 u_uni_muts = pd.Series(df_uni['mutation'].dropna().unique())
 u_uni_cDNA = pd.Series(df_uni['cDNA_name'].dropna().unique())
 u_cftr1_muts = pd.Series(df_cftr1['mutation'].dropna().unique())
@@ -101,7 +151,7 @@ print(df_cftr12.groupby(['cftr2','region']).size())
 
 
 ############################
-# --- (2) PROCESS DATA --- #
+# --- (3) PROCESS DATA --- #
 
 # (i) Determine "order" which fits the data the best
 d_orders = list(range(1,6))
@@ -142,7 +192,7 @@ mutation_locs['vartype'] = get_cDNA_variant_types(mutation_locs['cDNA'])
 
 
 #########################
-# --- (3) F508 DIST --- #
+# --- (4) F508 DIST --- #
 
 # (i) Look at pairing with F508del
 data_f508 = get_y_f508(df_ydata)
@@ -163,7 +213,7 @@ data_f508_dist['category'] = pd.Categorical(data_f508_dist['category'],cn_catego
 
 
 #####################################
-# --- (4) VARIATION AROUND F508 --- #
+# --- (5) VARIATION AROUND F508 --- #
 
 # (i) x-axis: F508del hetero, y-axis: integrated average (1:1)
 dat_int_dist = get_y_int(df_ydata)
@@ -196,7 +246,7 @@ dat_hetero_f508_comp = dat_hetero_other.merge(data_f508_dist[dat_hetero_other.co
 
 
 ########################
-# --- (5) PLOTTING --- #
+# --- (6) PLOTTING --- #
 
 # (i) Plot the GPU run-time of an A100
 dat_smooth = pd.DataFrame({'length':df_runtime['length'], 'smooth':extrap_star(df_runtime['length'])})

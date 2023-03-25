@@ -4,7 +4,7 @@
 conda activate cftr
 
 echo "--- (1) Scrape CFTR2 variants ---"
-python3 1_scrape_cftr2.py --scrape_variants --scrape_combinations --num_variants 1500
+python3 1_scrape_cftr2.py --scrape_variants --scrape_combinations --num_variants 25000
 
 echo "--- (2) Get the NCBI links ---"
 python3 2_get_ncbi.py

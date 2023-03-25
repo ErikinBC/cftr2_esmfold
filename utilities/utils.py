@@ -10,9 +10,27 @@ from difflib import get_close_matches
 
 
 def try2df(x) -> pd.DataFrame:
+    """Attempt to force x to be a dataframe"""
     if not isinstance(x, pd.DataFrame):
         x = pd.DataFrame(x)
     return x
+
+
+def find_unique_combinations(df:pd.DataFrame, cn1:str, cn2:str, keep_ukey:bool=False) -> pd.DataFrame:
+    """
+    For a DataFrame (df), find all unique combinations of cn1/cn2 where the order doesn't matter so that if cn1='a', and cn2='b', then cn1='b', and cn2='a' will be dropped
+    """
+    # Input check
+    assert isinstance(df, pd.DataFrame), 'df needs to be a dataframe'
+    assert df.columns.isin([cn1,cn2]).sum() == 2, 'cn1 or cn2 not found in df'
+    df2 = df[[cn1,cn2]].copy()
+    assert not df.duplicated().any(), 'df[[cn1,cn2]] has duplicated rows'
+    # Sort each row so the first position is alphabetical, then string concatenate
+    df2['ukey'] = df2.apply(lambda x: '-'.join(x.sort_values()), axis=1)
+    res = df.loc[df2.drop_duplicates('ukey').index]
+    if keep_ukey:
+        res['ukey'] = df2['ukey']
+    return res
 
 
 def find_closest_match(x:str, y:list, delta:float=0.05) -> tuple[str, int]:

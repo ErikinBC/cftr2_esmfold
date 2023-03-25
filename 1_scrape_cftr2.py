@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--scrape_variants', action='store_true', help="Whether the single SNP variant data should be scraped (unless this flag is present, this won't be scraped)")
 parser.add_argument('--scrape_combinations', action='store_true', help="Whether the two-SNP variant data should be scraped (unless this flag is present, this won't be scraped)")
 parser.add_argument('--scrape_cftr1', action='store_true', help="Whether the CFTR database should be scraped to get a unique list of mutations that have ever been discovered")
-parser.add_argument('--num_variants', type=int, default=1500, help='Number of variant combinations to scrape for the combinations (default==1500)')
+parser.add_argument('--num_variants', type=int, default=25000, help='Number of variant combinations to scrape for the combinations (default==1500)')
 args = parser.parse_args()
 scrape_variants = args.scrape_variants
 scrape_combinations = args.scrape_combinations
@@ -86,7 +86,7 @@ html2json = dict(zip(html_mutations, json_mutations))
 ### --- (2) PROCESS VARIANTS --- ###
 
 dat_variants = pd.read_excel(path_excel, skiprows=10)
-di_rename = {"Variant cDNA name\n(ordered 5' to 3')":'cDNA_name', 'Variant protein name':'protein_name', 'Variant legacy name':'legacy_name', '# alleles in CFTR2':'num_alleles', 'Allele frequency in CFTR2\n(of 142,036 identified variants)*':'allele_freq', '% pancreatic insufficient (patients with variant in trans with ACMG-PI variant, with variant in homozygosity, or with another variant expected to lead to no CFTR protein production)':'pct_PI'}
+di_rename = {"Variant cDNA name\n(ordered 5' to 3')":'cDNA_name', 'Variant protein name':'protein_name', 'Variant legacy name':'legacy_name', '# alleles in CFTR2':'num_alleles', 'Allele frequency in CFTR2\n(of 142,036 identified variants)*':'allele_freq', '% pancreatic insufficient (patients with variant in trans with ACMG-PI variant, with variant in homozygosity, or with another variant expected to lead to no CFTR protein production)':'pct_PI', "Variant final determination\n29 April 2022 (current version)":'cf_causing'}
 dat_variants = dat_variants[list(di_rename)].rename(columns=di_rename)
 dat_variants = dat_variants[dat_variants.notnull().mean(1) == 1]
 dat_variants.to_csv(os.path.join(dir_data, 'mutation_history.csv'), index=False)
