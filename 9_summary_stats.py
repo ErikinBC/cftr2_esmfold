@@ -17,7 +17,7 @@ import pandas as pd
 import plotnine as pn
 from mizani.formatters import percent_format
 # Local modules
-from parameters import alpha, n_boot, dir_data, dir_figures
+from parameters import alpha, n_boot, dir_data, dir_figures, reference_file
 from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match, find_unique_combinations
 from utilities.processing import di_ylbl, di_category, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
 
@@ -62,6 +62,20 @@ df_cftr1 = df_cftr1.drop_duplicates().reset_index(drop=True)
 df_muthist = pd.read_csv(os.path.join(dir_data, 'mutation_history.csv'))
 df_muthist = df_muthist.assign(in_uni=lambda x: x['legacy_name'].isin(df_uni['mutation'].unique()))
 
+# (viii) Load the Xy data
+y_label = pd.read_csv(os.path.join(dir_data, 'y_label.csv'),index_col=[0,1,2],header=[0,1,2])
+xmuts1 = pd.read_csv(os.path.join(dir_data, "mutant_cosine.csv"),usecols=['mutation'])
+xmuts2 = pd.read_csv(os.path.join(dir_data, "mutant_embeddings.csv"),usecols=['mutation'])
+u_xmuts = pd.Series(pd.concat(objs=[xmuts1, xmuts2]).drop_duplicates()['mutation'].unique())
+u_xmuts = u_xmuts[u_xmuts != reference_file].reset_index(drop=True)
+
+# (ix) Load in the amino acid seqs used for ESMFold
+df_aminos = pd.read_csv(os.path.join(dir_data, 'dat_aminos.csv'),usecols=['mutation','has_len','not_wt'])
+
+# (x) Load predicted results
+dat_scatter = pd.read_csv(os.path.join(dir_data,'pred_res_y.csv')).drop(columns='Unnamed: 0',errors='ignore')
+pd.Series(dat_scatter['idx'].unique())
+
 
 #####################################
 # --- (2) PRINT DATASET NUMBERS --- #
@@ -73,7 +87,11 @@ print(f"There a total of {n_uni} mutations that were scraped from CFTR2")
 # Which actually have labels
 print('What percent had some clinical data:')
 uni_has_val = df_uni.groupby(['msr','mutation']).apply(lambda x: x['value'].replace('insufficient data',np.nan).notnull().any())
-print(uni_has_val.groupby('msr').agg({'sum','count'}))
+uni_has_val = uni_has_val.groupby('msr').agg({'sum','count'})
+u_ylbl = y_label.any(1).groupby('mutation').any()
+n_ylbl = u_ylbl.sum()
+assert uni_has_val.loc['mutant','sum'] == n_ylbl, 'should align with ylabel'
+print(uni_has_val)
 print('\n')
 assert len(np.setdiff1d(df_uni['mutation'].unique(),df_muthist['legacy_name'])) == 0, 'Scraped variants should be found in mutation history xlsx file'
 # Compare the number scraped to the total available in the mutation_history xlsx file
@@ -106,6 +124,23 @@ print(n_data_muts)
 n_data_comb = df_comb.query('msr=="mutant"').replace('insufficient data',np.nan).groupby(['mutation1','mutation2'])['value'].apply(lambda x: x.notnull().any()).reset_index()
 n_data_comb_f508del = (n_data_comb.set_index('value') == 'F508del').any(1).groupby('value').sum()
 print(f'Out of the {n_data_comb.shape[0]} paired mutants, {n_data_comb["value"].sum()} have at least one label, on which {n_data_comb_f508del.loc[True]} have F508del (out of {n_data_comb_f508del.sum()})')
+
+# --- (iii) X-mutations (i.e. embeddings) --- #
+assert u_xmuts.isin(df_uni['mutation'].unique()).all(), 'If there is an emedding it should have come from a previous file'
+dat_xmut_in_ylbl = u_ylbl.reset_index().drop(columns=0).assign(has_ylbl=True)
+dat_xmut_in_ylbl = dat_xmut_in_ylbl.assign(has_xlbl=lambda x: x['mutation'].isin(u_xmuts))
+dat_xmut_in_ylbl = dat_xmut_in_ylbl.merge(df_aminos, 'left')
+dat_xmut_in_ylbl.query('has_xlbl==True & has_len==True & not_wt==False')
+
+
+# --- (x) Summarize waterfall chart --- #
+di_waterfall = {'cftr2':df_muthist.shape[0],
+                'scraped':n_uni,
+                'has_label':n_ylbl,
+                'has_len':1,
+                'has_missense':2}
+df_waterfall = pd.DataFrame.from_dict(di_waterfall, orient='index').rename_axis('data').rename(columns={0:'n_amino'}).reset_index()
+df_waterfall
 
 
 # --- (iii) Differences of mutation history to CFTR1 --- #

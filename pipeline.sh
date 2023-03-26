@@ -19,7 +19,7 @@ echo "--- (5) Run ESMFold ---"
 python3 5_esm_fold.py --chunk_size 64 --num_recycles 3 --chain_linker 25 --fp_precision 16 --min_amino_acids 100
 
 echo "--- (6) Generate the X/y data ---"
-python3 6_process_Xy.py --reference_file "base"
+python3 6_process_Xy.py
 
 echo "--- (7) Generate summary stats and figures ---"
 python3 7_summary_stats.py
