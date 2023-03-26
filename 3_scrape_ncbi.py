@@ -3,8 +3,9 @@ This script extracts relevant information from NCBI links that were obtained fro
 
 The following files are saved:
 
-1. ncbi_genome_loc.csv: final output file that contains the relevant information extracted from the HTMLs including the location of the genome where the mutation occurs.
-2. HTML pages from the NCBI website containing information about the gene mutations are downloaded and stored in the folder ncbi. For each HTML page, a file is created in the ncbi folder with the name '[ID].html', where [ID] is the ID associated with the corresponding NCBI page.
+1. HTML pages from the NCBI website containing information about the gene mutations are downloaded and stored in the folder ncbi. For each HTML page, a file is created in the ncbi folder with the name '[ID].html', where [ID] is the ID associated with the corresponding NCBI page.
+2. dat_href.csv: For each of the NCBI pages from generated from the ncbi_links.csv page, extracts the chromosome location information
+3. ncbi_genome_loc.csv: final output file that contains the relevant information extracted from the HTMLs including the location of the genome where the mutation occurs.
 """
 
 # External modules
