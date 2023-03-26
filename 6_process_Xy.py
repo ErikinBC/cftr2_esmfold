@@ -13,13 +13,6 @@ The script generates two types of fixed-dimension feature output. Each mutation 
 Note that the default argument for reference_file=="base" comes from the hard-coded name of the first dictonary key of di_polypeptide from the 4_cftr_gene.py script
 """
 
-# Specfify the "reference file"
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--reference_file', type=str, default='base', help='Reference file (default=="base")')
-args = parser.parse_args()
-reference_file = args.reference_file
-
 # Load modules
 import os
 import numpy as np
@@ -28,7 +21,7 @@ import plotnine as pn
 from time import time
 from mizani.formatters import percent_format
 # Load utilities
-from parameters import dir_data, dir_esmfold, dir_figures
+from parameters import dir_data, dir_esmfold, dir_figures, reference_file
 from utilities.utils import get_embedding_moments, embedding_to_df, process_cftr2_mutant, process_lung_range, diff_btw_matrics
 
 

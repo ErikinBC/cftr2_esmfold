@@ -30,6 +30,9 @@ seed = 1
 # Which labels to use for 8_debias_y.py script?
 ylabels = ['infection', 'PI', 'sweat']
 
+# Name of the reference file (i.e. wildtype)
+reference_file = "base"
+
 # Define the MLP regressor as the model class we want to use for the 9_predict_y.py script
 from sklearn.neural_network import MLPRegressor
 mdl_class = MLPRegressor
