@@ -145,7 +145,6 @@ cftr_gene = bases_comp[['canonical']].rename(columns={'canonical':'dna'}).reset_
 # Save Exon data for later
 cftr_gene.to_csv(os.path.join(dir_data, 'cftr_exon_locs.csv'), index=False)
 
-
 # (ii) Loop over the different variant types
 assert ncbi_genome_loc['vartype'].isin(['mutation','delete','dup','ins']).all(), 'The variant type is not recognized'
 # Look for intronic mutations

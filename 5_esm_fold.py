@@ -58,15 +58,21 @@ df_aminos['has_len'] = idx_keep
 # Split into different chunks and then sort so that we get an accurate representation of the runtime interpolation
 df_aminos['group'] = pd.cut(df_aminos['length'],[0,500,750,1000,1250,1500])
 df_aminos = df_aminos.sort_values(['group','mutation'],ascending=[True,False]).assign(idx=lambda x: x.groupby('group').cumcount()).sort_values(['idx','length']).reset_index(drop=True)
-# Remove the "duplicated" sequences
-idx_drop = df_aminos['residue'].duplicated()
-print(f"Number of sequences after removing duplicates: {idx_drop.sum()}/{len(idx_drop)}")
-df_aminos['not_wt'] = ~idx_drop
+
+# Remove the "duplicated" sequences to avoid wasted computation
+df_aminos.set_index('mutation', inplace=True)
+# Determine which are "synonymous"
+df_aminos = df_aminos.assign(is_syn=lambda x: np.where(x.index=='base',False,np.where(x['residue'] == df_aminos.loc['base','residue'],True,False)))
+# Determine which match the other types
+df_aminos['is_dup'] = False
+df_aminos.loc[df_aminos.drop('base')['residue'].duplicated().reset_index().query('residue==True')['mutation'], 'is_dup'] = True
+print(f"Number of synynomous mutations: {df_aminos['is_syn'].sum()}, number of duplicated sequences: {df_aminos['is_dup'].sum()}")
 # Save to later transparency
-df_aminos.to_csv(os.path.join(dir_data, 'dat_aminos.csv'),index=False)
+df_aminos.to_csv(os.path.join(dir_data, 'dat_aminos.csv'),index=True)
 
 # Subset to valid sets
-df_aminos = df_aminos.query('not_wt & has_len').drop(columns=['not_wt','has_len']).reset_index(drop=True)
+df_aminos = df_aminos.query('has_len==True & is_syn==False & is_dup==False')
+df_aminos = df_aminos.drop(columns=['has_len','is_syn','is_dup']).reset_index()
 
 # Print approximate run time based on preliminary trials
 eta_hours = df_aminos['group'].cat.codes.map({0:0.6, 1:13.9, 2:46.0, 3:135.7, 4:261.4}).sum() / 60 / 60
