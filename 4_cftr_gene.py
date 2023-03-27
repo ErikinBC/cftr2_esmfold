@@ -157,7 +157,6 @@ ncbi_exome_loc = ncbi_exome_loc[~ncbi_exome_loc['cDNA'].str.contains(';',regex=F
 
 # Store the amino acid sequences in a dict
 di_polypeptide = {'base':translate_dna(''.join(cftr_gene['dna']))}
-ncbi_genome_loc.query('vartype=="ins"').cDNA.to_list()
 for i, r in ncbi_exome_loc.iterrows():
     print('Processing variant %s of %s' % (i+1, len(ncbi_exome_loc)))
     if r['vartype'] == 'mutation':
