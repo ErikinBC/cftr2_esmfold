@@ -15,6 +15,7 @@ import os
 import numpy as np
 import pandas as pd
 import plotnine as pn
+import waterfall_chart
 from mizani.formatters import percent_format
 # Local modules
 from parameters import alpha, n_boot, dir_data, dir_figures, reference_file
@@ -70,11 +71,20 @@ u_xmuts = pd.Series(pd.concat(objs=[xmuts1, xmuts2]).drop_duplicates()['mutation
 u_xmuts = u_xmuts[u_xmuts != reference_file].reset_index(drop=True)
 
 # (ix) Load in the amino acid seqs used for ESMFold
-df_aminos = pd.read_csv(os.path.join(dir_data, 'dat_aminos.csv'),usecols=['mutation','has_len','not_wt'])
+df_aminos = pd.read_csv(os.path.join(dir_data, 'dat_aminos.csv'),usecols=['mutation','has_len','is_syn','is_dup'])
 
 # (x) Load predicted results
 dat_scatter = pd.read_csv(os.path.join(dir_data,'pred_res_y.csv')).drop(columns='Unnamed: 0',errors='ignore')
-pd.Series(dat_scatter['idx'].unique())
+u_muts_pred = pd.Series(dat_scatter['idx'].unique())
+
+# (xi) Load NCBI matched pages
+dat_ncbi_loc = pd.read_csv(os.path.join(dir_data, 'ncbi_genome_loc.csv'), usecols=['mutation','from','to','links'])
+
+# (xii) Get the exon location
+cftr_gene = pd.read_csv(os.path.join(dir_data, 'cftr_exon_locs.csv'))
+dat_ncbi_loc['is_intron'] = ~dat_ncbi_loc['from'].isin(cftr_gene['idx'])
+print(f"There are {dat_ncbi_loc['is_intron'].sum()} intronic mutations")
+
 
 
 #####################################
@@ -82,15 +92,13 @@ pd.Series(dat_scatter['idx'].unique())
 
 # --- (i) Number of CFTR2 mutations --- #
 # Total count
-n_uni = df_uni['mutation'].nunique()
+u_uni = df_uni['mutation'].unique()
+n_uni = len(u_uni)
 print(f"There a total of {n_uni} mutations that were scraped from CFTR2")
 # Which actually have labels
 print('What percent had some clinical data:')
-uni_has_val = df_uni.groupby(['msr','mutation']).apply(lambda x: x['value'].replace('insufficient data',np.nan).notnull().any())
-uni_has_val = uni_has_val.groupby('msr').agg({'sum','count'})
-u_ylbl = y_label.any(1).groupby('mutation').any()
-n_ylbl = u_ylbl.sum()
-assert uni_has_val.loc['mutant','sum'] == n_ylbl, 'should align with ylabel'
+uni_any_val = df_uni.groupby(['msr','mutation']).apply(lambda x: x['value'].replace('insufficient data',np.nan).notnull().any())
+uni_has_val = uni_any_val.groupby('msr').agg({'sum','count'})
 print(uni_has_val)
 print('\n')
 assert len(np.setdiff1d(df_uni['mutation'].unique(),df_muthist['legacy_name'])) == 0, 'Scraped variants should be found in mutation history xlsx file'
@@ -101,8 +109,8 @@ print(df_muthist.groupby(['in_uni','cf_causing'])['num_alleles'].agg({'count','m
 print('\n')
 missing_cf_causing_muts = df_muthist.query('~in_uni & cf_causing!="Non CF-causing"')['legacy_name']
 print(f'A total of {len(missing_cf_causing_muts)} mutations were missed from the scrape:')
-print("\n".join(missing_cf_causing_muts))
-print('\n')
+# print("\n".join(missing_cf_causing_muts))
+# print('\n')
 
 # Get the number of combinations
 n_comb = df_comb.groupby(['mutation1','mutation2']).size().reset_index().drop(columns=0)
@@ -111,10 +119,22 @@ n_comb_homo = n_comb.query('mutation1 == mutation2')
 n_comb_f508 = n_comb[n_comb['ukey'].str.contains("F508del")]
 print(f"There a total of {n_comb.shape[0]} mutation pairs that were scraped from CFTR2, {n_comb_f508.shape[0]} are F508 combinations and {n_comb_homo.shape[0]} and homozygous\n")
 
+# --- (ii) NCBI matching --- #
+assert dat_ncbi_loc['mutation'].isin(u_uni).all(), 'NCBI should be a subset of what was scraped'
+n_ncbi = dat_ncbi_loc['mutation'].nunique()
+n_ncbi_exon = dat_ncbi_loc.query('is_intron==False').shape[0]
 
-# --- (ii) Small cell censoring --- #
+# --- (iii) Small cell censoring --- #
+# Get the number of ylabels
+u_ylbl = y_label.any(1).groupby('mutation').any()
+n_ylbl = u_ylbl.sum()
+assert uni_has_val.loc['mutant','sum'] == n_ylbl, 'should align with ylabel'
+# See how many NCBI mutations have y labels
+n_ylbl_adj = u_ylbl.index.isin(dat_ncbi_loc['mutation']).sum()
+
+# Determine what the small-cell censoring is
 n_data_muts = df_uni.query('msr=="mutant"').groupby('mutation')[['num_alleles','n_pat']].agg('max').astype(int).reset_index()
-n_data_muts = n_data_muts.merge(uni_has_val.xs('mutant').reset_index().rename(columns={0:'has_val'}))
+n_data_muts = n_data_muts.merge(uni_any_val.xs('mutant').reset_index().rename(columns={0:'has_val'}))
 n_data_muts = n_data_muts.assign(has_val=lambda x: x['has_val'].astype(str)).pivot_table(['num_alleles','n_pat'],None,'has_val',['min','max','count'])
 n_data_muts = n_data_muts.reorder_levels(['has_val',None],1).loc[:,idx[['False','True']]]
 print('There appears to be a small-cell censoring of <=5')
@@ -127,23 +147,46 @@ print(f'Out of the {n_data_comb.shape[0]} paired mutants, {n_data_comb["value"].
 
 # --- (iii) X-mutations (i.e. embeddings) --- #
 assert u_xmuts.isin(df_uni['mutation'].unique()).all(), 'If there is an emedding it should have come from a previous file'
-dat_xmut_in_ylbl = u_ylbl.reset_index().drop(columns=0).assign(has_ylbl=True)
+dat_xmut_in_ylbl = u_ylbl[u_ylbl.index.isin(dat_ncbi_loc['mutation'])].reset_index().drop(columns=0).assign(has_ylbl=True)
 dat_xmut_in_ylbl = dat_xmut_in_ylbl.assign(has_xlbl=lambda x: x['mutation'].isin(u_xmuts))
 dat_xmut_in_ylbl = dat_xmut_in_ylbl.merge(df_aminos, 'left')
-dat_xmut_in_ylbl.query('has_xlbl==True & has_len==True & not_wt==False')
+assert u_muts_pred.isin(dat_xmut_in_ylbl['mutation']).all(), 'OOF predicted mutations should be a subset'
+dat_xmut_in_ylbl['has_pred'] = dat_xmut_in_ylbl['mutation'].isin(u_muts_pred)
+dat_xmut_in_ylbl.set_index('mutation', inplace=True)
+assert (dat_xmut_in_ylbl.query('has_pred').nunique() == 1).all(), 'If there is a prediction, then the high level conditions should hold'
+dat_xmut_in_ylbl.groupby(dat_xmut_in_ylbl.columns.to_list()).size()
+n_has_len = dat_xmut_in_ylbl.query('has_len==True').shape[0]
+syn_muts = dat_xmut_in_ylbl.query('has_len==True & is_syn==True').index.to_list()
+n_syn_muts = dat_xmut_in_ylbl.query('has_len==True & is_syn==False').shape[0]
+dup_muts = dat_xmut_in_ylbl.query('has_len==True & is_syn==False & is_dup==True').index.to_list()
+# The reason that the duplicated mutations don't have a predicted value, is that the cosine measure didn't include a duplicate append
+assert len(np.setdiff1d(xmuts1, xmuts2)) == 0, 'The cosine measurements should not have any different values'
+assert len(np.setdiff1d(dup_muts, np.setdiff1d(xmuts2, xmuts1))) == 0, 'Any duplicates should be b/c the cosine measure didnt append the duplicate mutations'
+n_dup_muts = dat_xmut_in_ylbl.query('has_len==True & is_syn==False & is_dup==False').shape[0]
+print(f'The following {len(syn_muts)} variants should be synonymous')
+tmp_print = '\n'.join([f'{k}:{v}' for k,v in dat_ncbi_loc.set_index('mutation').loc[syn_muts,'links'].to_dict().items()])
+print(tmp_print)
 
 
-# --- (x) Summarize waterfall chart --- #
-di_waterfall = {'cftr2':df_muthist.shape[0],
-                'scraped':n_uni,
-                'has_label':n_ylbl,
-                'has_len':1,
-                'has_missense':2}
-df_waterfall = pd.DataFrame.from_dict(di_waterfall, orient='index').rename_axis('data').rename(columns={0:'n_amino'}).reset_index()
-df_waterfall
+# --- (iv) Summarize waterfall chart --- #
+di_waterfall = {'CFTR2':df_muthist.shape[0],
+                'Scraped':n_uni,
+                'NCBI':n_ncbi,
+                'Exonic':n_ncbi_exon,
+                'Small cell':n_ylbl_adj,
+                'Amino Length':n_has_len,
+                'Is Missense':n_syn_muts,
+                'Duplicated Seq':n_dup_muts}
+df_waterfall = pd.DataFrame.from_dict(di_waterfall, orient='index').rename_axis('data').rename(columns={0:'n_amino'})
+df_waterfall = df_waterfall.assign(d_amino = lambda x: (x['n_amino']-x['n_amino'].shift(1)).fillna(x['n_amino'].max())).astype(int).reset_index()
+# Make a plot showing the waterfall change in values
+plt_waterfall = waterfall_chart.plot(df_waterfall['data'], df_waterfall['d_amino'], y_lab='# of genotypes', formatting='{:.0f}', rotation_value=90)
+plt_waterfall.ylim(bottom=0)
+plt_waterfall.savefig(os.path.join(dir_figures, 'waterfall_nsamp.png'))
+plt_waterfall.close()
 
 
-# --- (iii) Differences of mutation history to CFTR1 --- #
+# --- (v) Differences of mutation history to CFTR1 --- #
 u_uni_muts = pd.Series(df_uni['mutation'].dropna().unique())
 u_uni_cDNA = pd.Series(df_uni['cDNA_name'].dropna().unique())
 u_cftr1_muts = pd.Series(df_cftr1['mutation'].dropna().unique())
