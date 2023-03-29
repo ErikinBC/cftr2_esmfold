@@ -1,6 +1,7 @@
 """
-This script generates the figures that are used to explore the data and runtime performance.
+This script generates the figures that are used to explore the data and runtime performance. It also prints off key data statistics used for write-up.
 
+---Figures---
 1. runtime.png: Actual runtime of the esmfold.model from 5_esm_fold.py as a function of sequence length.
 2. exon_pos.png: Distribution of exonic mutations across the CFTR gene by mutation type.
 3. rho_f508.png: Correlation between the the different phenotype labels for F508del heterozygotes. 
@@ -84,7 +85,6 @@ dat_ncbi_loc = pd.read_csv(os.path.join(dir_data, 'ncbi_genome_loc.csv'), usecol
 cftr_gene = pd.read_csv(os.path.join(dir_data, 'cftr_exon_locs.csv'))
 dat_ncbi_loc['is_intron'] = ~dat_ncbi_loc['from'].isin(cftr_gene['idx'])
 print(f"There are {dat_ncbi_loc['is_intron'].sum()} intronic mutations")
-
 
 
 #####################################
@@ -227,7 +227,6 @@ df_cftr12['region'] = df_cftr12['region'].str.split('\\s').str[0].fillna('missin
 print(df_cftr12.groupby(['cftr2','region']).size())
 
 
-
 ############################
 # --- (3) PROCESS DATA --- #
 
@@ -346,9 +345,10 @@ gg_runtime.save(os.path.join(dir_figures,'runtime.png'), width=6, height=4, dpi=
 tmp_xaxis = rel_exonic.assign(center=lambda x: (x['stop']+x['start'])/2)
 selected_mutations = mutation_locs.sort_values('allele_freq').tail(5)['mutation'].to_list() + ['R347H']
 selected_mutations = mutation_locs[mutation_locs['mutation'].isin(selected_mutations)]
+di_vartype = {'delete':'Deletion', 'mutation':'Substitution','ins':'Insertion','dup':'Duplication'}
 gg_exon_pos = (pn.ggplot(mutation_locs, pn.aes(x='x_pos', y='-np.log10(allele_freq)', color='vartype')) + 
             pn.theme_bw() + pn.geom_point() + 
-            pn.scale_color_discrete(name='Variant type') +
+            pn.scale_color_discrete(name='Variant type',labels=lambda x: [di_vartype[z] for z in x]) +
             pn.labs(x='Exon', y='-log10(allele frequency)') + 
             pn.ggtitle('CFTR2 variants') + 
             pn.geom_text(pn.aes(label='mutation'), data=selected_mutations, size=8, adjust_text={'expand_points':(2.5, 2.5),'arrowprops': {'arrowstyle': 'simple'}}) + 
