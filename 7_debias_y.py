@@ -105,13 +105,14 @@ adj_y.to_csv(os.path.join(dir_data,'y_adjusted.csv'),index=True)
 
 # (i) Plot the within-y label correlation
 posd = pn.position_dodge(0.5)
+ylb = min(0,np.round(rho_y.lb.min() * 10) / 10)
 gg_rho_y = (pn.ggplot(rho_y, pn.aes(x='xlbl',y='rho',color='y',shape='method')) + 
     pn.theme_bw() + pn.geom_point(position=posd) + 
     pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
     pn.labs(y='Correlation coefficient') +
     pn.scale_color_discrete(name='Label') + 
     pn.scale_shape_discrete(name='Correlation method') + 
-    pn.scale_y_continuous(limits=[0,1],labels=percent_format()) + 
+    pn.scale_y_continuous(limits=[ylb,1],labels=percent_format()) + 
     pn.geom_hline(yintercept=0,linetype='--') + 
     pn.theme(axis_text_x=pn.element_text(angle=90),axis_title_x=pn.element_blank()) + 
     pn.ggtitle('Correlation within types\nLine range shows 95% BS-CI'))
@@ -125,7 +126,7 @@ dat_nw['lbl'] = cat_from_map(dat_nw['lbl'], di_ylbl)
 dat_nw = dat_nw.assign(grp=lambda x: x['category'].cat.codes.astype(str)+x['lbl'].cat.codes.astype(str))
 perf_nw['category'] = cat_from_map(perf_nw['category'], di_category)
 perf_nw['lbl'] = cat_from_map(perf_nw['lbl'], di_ylbl)
-
+h = 2.5*dat_nw['category'].nunique()
 gg_nw_ylbl = (pn.ggplot(dat_nw,pn.aes(x='x',y='y')) + 
     pn.theme_bw() + pn.geom_point() + 
     pn.geom_line(pn.aes(y='yhat',group='grp'),color='blue') + 
@@ -134,7 +135,7 @@ gg_nw_ylbl = (pn.ggplot(dat_nw,pn.aes(x='x',y='y')) +
     pn.ggtitle('Dots show actual value\nBlue line and ranges is Nadarya-Watson Estimator and 95% CI for LOO-CV') + 
     pn.labs(x='Amino acid length', y='Phenotype value') + 
     pn.facet_grid('category ~ lbl',scales='free'))
-gg_nw_ylbl.save(os.path.join(dir_figures,'nw_ylbl.png'),width=10, height=7.5)
+gg_nw_ylbl.save(os.path.join(dir_figures,'nw_ylbl.png'),width=10, height=h)
 
 
 

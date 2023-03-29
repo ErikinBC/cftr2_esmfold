@@ -83,7 +83,8 @@ from utilities.processing import di_ylbl, di_category
 from utilities.stats import get_perf_msrs, bootstrap_function
 
 # (i) Clean up the names for plotting
-tmp_df = dat_scatter['cn'].str.split('\\_',regex=True,n=1,expand=True).rename(columns={0:'category',1:'lbl'})
+tmp_df = dat_scatter['cn'].str.split('\\_',regex=True)
+tmp_df = pd.DataFrame({'category':tmp_df.str[:-1].map('_'.join), 'lbl':tmp_df.str[-1]})
 tmp_df['lbl'] = tmp_df['lbl'].map(di_ylbl)
 tmp_df['category'] = tmp_df['category'].map(di_category)
 dat_eval = pd.concat(objs=[tmp_df, dat_scatter.drop(columns='cn')],axis=1)
@@ -96,6 +97,7 @@ res_fold['msr'] = res_fold['msr'].map({'rho':'Spearman', 'tau':'Kendall'})
 
 # (iii) Plot the predicted vs actual values
 tmp_txt = dat_eval.query('idx.isin(["F508del","R347H"])').copy()
+h = 1.75*dat_eval['category'].nunique()
 gg_oof_scatter = (pn.ggplot(dat_eval, pn.aes(x='yhat',y='y')) + 
     pn.theme_bw() + pn.geom_point(size=0.5) + 
     pn.labs(x='Predicted (out-of-fold)',y='Actual') + 
@@ -103,7 +105,7 @@ gg_oof_scatter = (pn.ggplot(dat_eval, pn.aes(x='yhat',y='y')) +
     pn.facet_grid('category~lbl',scales='free') + 
     pn.ggtitle('Predicted (out-of-fold) vs actual adjusted phenotype values') + 
     pn.geom_smooth(method='lm',se=False))
-gg_oof_scatter.save(os.path.join(dir_figures, 'oof_scatter.png'),width=9,height=5)
+gg_oof_scatter.save(os.path.join(dir_figures, 'oof_scatter.png'),width=9,height=h)
 
 
 # (iv) Plot the overall performance
