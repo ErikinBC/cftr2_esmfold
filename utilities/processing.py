@@ -17,7 +17,17 @@ di_category = {'infection':'Infection Rate',
                 'PI':'Pancreatic Insuff.', 
                 'lung_max_All':'FEV1 % (Max)',
                 'lung_mid_All':'FEV1 % (Mid)',
-                'lung_min_All':'FEV1 % (Min)'}
+                'lung_min_All':'FEV1 % (Min)',
+                'lung_min_10':'FEV1% <10 (Min)',
+                'lung_min_10-20':'FEV1% 10-20 (Min)',
+                'lung_min_20':'FEV1% >20 (Min)',
+                'lung_max_10':'FEV1% <10 (Max)',
+                'lung_max_10-20':'FEV1% 10-20 (Max)',
+                'lung_max_20':'FEV1% >20 (Max)',
+                'lung_mid_10':'FEV1% <10 (Mid)',
+                'lung_mid_10-20':'FEV1% 10-20 (Mid)',
+                'lung_mid_20':'FEV1% >20 (Mid)'
+                }
 cn_category = list(di_category)
 vals_catory = list(di_category.values())
 
