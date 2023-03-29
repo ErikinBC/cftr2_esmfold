@@ -21,7 +21,7 @@ from mizani.formatters import percent_format
 # Local modules
 from parameters import alpha, n_boot, dir_data, dir_figures, reference_file
 from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match, find_unique_combinations
-from utilities.processing import di_ylbl, di_category, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
+from utilities.processing import di_ylbl, di_category, di_vartype, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
 
 # For multiindex slicing
 idx = pd.IndexSlice
@@ -119,6 +119,16 @@ n_comb_homo = n_comb.query('mutation1 == mutation2')
 n_comb_f508 = n_comb[n_comb['ukey'].str.contains("F508del")]
 print(f"There a total of {n_comb.shape[0]} mutation pairs that were scraped from CFTR2, {n_comb_f508.shape[0]} are F508 combinations and {n_comb_homo.shape[0]} and homozygous\n")
 
+# Compare the number of labels that have a heterozygotic combination, and of those, which are only F508del
+dat_hetero = df_ydata.loc[:,idx[:,:,'hetero']]
+dat_hetero = dat_hetero[dat_hetero.notnull().any(1)]
+dat_hetero = dat_hetero.index.to_frame(False).set_index(['mutation','label_num']) == 'F508del'
+dat_hetero = dat_hetero.reset_index().pivot_table('label_num','mutation','mutation2','count').fillna(0).astype(int)
+dat_hetero = dat_hetero.clip(0,1).astype(str)
+dat_hetero = (dat_hetero[False] + dat_hetero[True]).map({'01':'F508-only','11':'Both',00:'None','10':'Other-only'})
+print(dat_hetero.value_counts())
+
+
 # --- (ii) NCBI matching --- #
 assert dat_ncbi_loc['mutation'].isin(u_uni).all(), 'NCBI should be a subset of what was scraped'
 n_ncbi = dat_ncbi_loc['mutation'].nunique()
@@ -145,7 +155,7 @@ n_data_comb = df_comb.query('msr=="mutant"').replace('insufficient data',np.nan)
 n_data_comb_f508del = (n_data_comb.set_index('value') == 'F508del').any(1).groupby('value').sum()
 print(f'Out of the {n_data_comb.shape[0]} paired mutants, {n_data_comb["value"].sum()} have at least one label, on which {n_data_comb_f508del.loc[True]} have F508del (out of {n_data_comb_f508del.sum()})')
 
-# --- (iii) X-mutations (i.e. embeddings) --- #
+# --- (iv) X-mutations (i.e. embeddings) --- #
 assert u_xmuts.isin(df_uni['mutation'].unique()).all(), 'If there is an emedding it should have come from a previous file'
 dat_xmut_in_ylbl = u_ylbl[u_ylbl.index.isin(dat_ncbi_loc['mutation'])].reset_index().drop(columns=0).assign(has_ylbl=True)
 dat_xmut_in_ylbl = dat_xmut_in_ylbl.assign(has_xlbl=lambda x: x['mutation'].isin(u_xmuts))
@@ -168,7 +178,7 @@ tmp_print = '\n'.join([f'{k}:{v}' for k,v in dat_ncbi_loc.set_index('mutation').
 print(tmp_print)
 
 
-# --- (iv) Summarize waterfall chart --- #
+# --- (v) Summarize waterfall chart --- #
 di_waterfall = {'CFTR2':df_muthist.shape[0],
                 'Scraped':n_uni,
                 'NCBI':n_ncbi,
@@ -186,7 +196,7 @@ plt_waterfall.savefig(os.path.join(dir_figures, 'waterfall_nsamp.png'))
 plt_waterfall.close()
 
 
-# --- (v) Differences of mutation history to CFTR1 --- #
+# --- (vi) Differences of mutation history to CFTR1 --- #
 u_uni_muts = pd.Series(df_uni['mutation'].dropna().unique())
 u_uni_cDNA = pd.Series(df_uni['cDNA_name'].dropna().unique())
 u_cftr1_muts = pd.Series(df_cftr1['mutation'].dropna().unique())
@@ -286,7 +296,7 @@ rho_f508['xval'] = pd.Categorical(rho_f508['xval'], rho_f508.groupby('xval')['rh
 data_f508_dist = data_f508.sort_values(['category','value']).assign(ridx=lambda x: x.groupby('category').cumcount()+1).merge(df_cftr2, 'left')
 data_f508_dist = data_f508_dist.assign(vartype=lambda x: get_cDNA_variant_types(x['cDNA']),allele_freq=lambda x: -np.log10(x['allele_freq']))
 data_f508_dist.dropna(inplace=True)
-data_f508_dist['category'] = pd.Categorical(data_f508_dist['category'],cn_category).map(di_category)
+data_f508_dist['category'] = cat_from_map(data_f508_dist['category'], di_category)
 
 
 #####################################
@@ -294,15 +304,14 @@ data_f508_dist['category'] = pd.Categorical(data_f508_dist['category'],cn_catego
 
 # (i) x-axis: F508del hetero, y-axis: integrated average (1:1)
 dat_int_dist = get_y_int(df_ydata)
-dat_int_dist['category'] = dat_int_dist['category'].map(di_category)
-dat_int_dist_comp = dat_int_dist.merge(data_f508_dist[['mutation','category','value']],'outer',on=['mutation','category'],suffixes=('_int','_f508'))
-dat_int_dist_comp['category'] = pd.Categorical(dat_int_dist_comp['category'], vals_catory)
+dat_int_dist['category'] = cat_from_map(dat_int_dist['category'], di_category)
+dat_int_dist_comp = dat_int_dist.merge(data_f508_dist[['mutation','category','value']],'inner',on=['mutation','category'],suffixes=('_int','_f508'))
 
 # (ii) x-axis: average or hetero/homo, y-axis: integrated average (1:1)
 dat_ave_hetero = get_y_hetero_ave(df_ydata)
 dat_ave_hetero['category'] = cat_from_map(dat_ave_hetero['category'], di_category)
 # Add onto the integrated
-dat_int_dist_comp = dat_int_dist_comp.merge(dat_ave_hetero,'outer').rename(columns={'value':'value_pair'})
+dat_int_dist_comp = dat_int_dist_comp.merge(dat_ave_hetero,'inner').rename(columns={'value':'value_pair'})
 dat_int_dist_comp = dat_int_dist_comp.melt(['mutation','category','value_int'],var_name='comp').assign(comp=lambda x: x['comp'].str.replace('value_','',regex=False))
 
 # (iii) x-axis: mutant homo, y-axis: F508del (when is homo worse the F508 hetero)
@@ -310,8 +319,7 @@ dat_homo_dist = get_y_homo(df_ydata)
 dat_homo_dist['category'] = cat_from_map(dat_homo_dist['category'],di_category)
 dat_homo_f508_comp = dat_homo_dist.merge(data_f508_dist[dat_homo_dist.columns],'inner',['mutation','category'],suffixes=('_homo','_f508'))
 
-
-# (iii) x-axis: F508del hetero, y-axis: other hetero (1:many) - show average with alpha=1, the rest with alpha=0.25
+# (iv) x-axis: F508del hetero, y-axis: other hetero (1:many) - show average with alpha=1, the rest with alpha=0.25
 dat_hetero_other = df_ydata.loc[:,idx[cn_category,'Paired','hetero']]
 dat_hetero_other = dat_hetero_other.droplevel(level=(1,2),axis=1)
 other_hetero = list(np.setdiff1d(dat_hetero_other.index.get_level_values('mutation2').fillna('').unique(),['F508del','']))
@@ -321,9 +329,14 @@ dat_hetero_other = dat_hetero_other.melt(ignore_index=False).dropna().reset_inde
 dat_hetero_other['category'] = cat_from_map(dat_hetero_other['category'],di_category)
 dat_hetero_f508_comp = dat_hetero_other.merge(data_f508_dist[dat_hetero_other.columns.drop('mutation2')],'inner',on=['mutation','category'],suffixes=('_hetero','_f508'))
 
+########################
+# --- (6)  --- #
+
+
+
 
 ########################
-# --- (6) PLOTTING --- #
+# --- (7) PLOTTING --- #
 
 # (i) Plot the GPU run-time of an A100
 dat_smooth = pd.DataFrame({'length':df_runtime['length'], 'smooth':extrap_star(df_runtime['length'])})
@@ -345,7 +358,7 @@ gg_runtime.save(os.path.join(dir_figures,'runtime.png'), width=6, height=4, dpi=
 tmp_xaxis = rel_exonic.assign(center=lambda x: (x['stop']+x['start'])/2)
 selected_mutations = mutation_locs.sort_values('allele_freq').tail(5)['mutation'].to_list() + ['R347H']
 selected_mutations = mutation_locs[mutation_locs['mutation'].isin(selected_mutations)]
-di_vartype = {'delete':'Deletion', 'mutation':'Substitution','ins':'Insertion','dup':'Duplication'}
+
 gg_exon_pos = (pn.ggplot(mutation_locs, pn.aes(x='x_pos', y='-np.log10(allele_freq)', color='vartype')) + 
             pn.theme_bw() + pn.geom_point() + 
             pn.scale_color_discrete(name='Variant type',labels=lambda x: [di_vartype[z] for z in x]) +
@@ -358,15 +371,18 @@ gg_exon_pos.save(os.path.join(dir_figures,'exon_pos.png'), width=8, height=4, dp
 
 # (iii) Plot the correlation between different measures
 posd = pn.position_dodge(0.5)
+ylb = rho_f508['lb'].min()-0.05
+txt_rho_f508 = rho_f508.groupby('xval').agg({'rho':'mean','lb':'min'}).reset_index()
 gg_rho_f508 = (pn.ggplot(rho_f508, pn.aes(x='xval',y='rho',color='method')) + 
     pn.theme_bw() + pn.geom_point(size=1,position=posd) + 
     pn.labs(y='Correlation coefficient') + 
     pn.scale_color_discrete(name='Method') + 
+    pn.geom_text(pn.aes(y='lb',label='100*rho',x='xval'),inherit_aes=False,size=8,angle=90,format_string='{:.0f}%',data=txt_rho_f508,nudge_y=-0.1) + 
     pn.theme(axis_title_x=pn.element_blank(), axis_text=pn.element_text(angle=90)) + 
     pn.scale_y_continuous(labels=percent_format(),limits=[-1,1]) + 
     pn.geom_hline(yintercept=0,linetype='--',color='black') + 
     pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
-    pn.ggtitle('Correlation between measures for patiets with F508del'))
+    pn.ggtitle('Uses only F508del-heterozygotes\nText shows average correlation'))
 gg_rho_f508.save(os.path.join(dir_figures,'rho_f508.png'), width=6, height=4, dpi=300)
 
 # (iv) Look at the phenotypic distribution for patients with F508del
@@ -388,7 +404,7 @@ gg_f508_dist = (pn.ggplot(data_f508_dist, pn.aes(x='ridx',y='value',color='allel
     pn.geom_hline(pn.aes(yintercept='normal'),data=dat_hlines, inherit_aes=False,color='black',linetype='--') + 
     pn.theme(subplots_adjust={'hspace': 0.25, 'wspace': 0.25}) + 
     pn.scale_color_continuous(name='-log10(allele frequency)') +  
-    pn.scale_shape_discrete(name='Variant type') + 
+    pn.scale_shape_discrete(name='Variant type',labels=lambda x: [di_vartype[z] for z in x]) + 
     pn.labs(y='Value',x='Mutation (ordered by value)'))
 gg_f508_dist.save(os.path.join(dir_figures,'ydist_f508.png'), width=8, height=5, dpi=600)
 

@@ -105,17 +105,20 @@ adj_y.to_csv(os.path.join(dir_data,'y_adjusted.csv'),index=True)
 
 # (i) Plot the within-y label correlation
 posd = pn.position_dodge(0.5)
-ylb = min(0,np.round(rho_y.lb.min() * 10) / 10)
+ylb = np.round(rho_y.lb.min() * 10) / 10
+ax_ylb = min(0,ylb)
+txt_rho_y = rho_y.groupby(['xlbl'])['rho'].mean().dropna().reset_index().assign(y=ylb-0.05)
 gg_rho_y = (pn.ggplot(rho_y, pn.aes(x='xlbl',y='rho',color='y',shape='method')) + 
     pn.theme_bw() + pn.geom_point(position=posd) + 
     pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
     pn.labs(y='Correlation coefficient') +
+    pn.geom_text(pn.aes(y='y',label='100*rho',x='xlbl'),inherit_aes=False,size=10,format_string='{:.0f}%',data=txt_rho_y) + 
     pn.scale_color_discrete(name='Label') + 
     pn.scale_shape_discrete(name='Correlation method') + 
-    pn.scale_y_continuous(limits=[ylb,1],labels=percent_format()) + 
+    pn.scale_y_continuous(limits=[ax_ylb, 1],labels=percent_format()) + 
     pn.geom_hline(yintercept=0,linetype='--') + 
     pn.theme(axis_text_x=pn.element_text(angle=90),axis_title_x=pn.element_blank()) + 
-    pn.ggtitle('Correlation within types\nLine range shows 95% BS-CI'))
+    pn.ggtitle('Correlation within types\nLine range shows 95% BS-CI\nText shows average correlation'))
 gg_rho_y.save(os.path.join(dir_figures, 'within_y_rho.png'),width=7, height=4)
 
 

@@ -71,6 +71,11 @@ res_oof = pd.concat(holder_idx)
 dat_scatter = merge_pairwise_dfs(y_err.loc[res_oof.index], res_oof)
 dat_scatter.rename(columns={'value_x':'y', 'value_y':'yhat'}, inplace=True)
 dat_scatter.to_csv(os.path.join(dir_data,'pred_res_y.csv'), index=True)
+# Print the algorithm size
+if all([v in dir(algorition.algorithm) for v in ['intercepts_','coefs_']]):
+    n_params = sum([i.shape[0] for i in algorition.algorithm.intercepts_])
+    n_params += sum([np.prod(c.shape) for c in algorition.algorithm.coefs_])
+    print(f'Model has a total of {n_params:,} parameters')
 
 
 #######################

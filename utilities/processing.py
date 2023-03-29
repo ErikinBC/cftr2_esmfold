@@ -11,6 +11,12 @@ idx = pd.IndexSlice
 # define column metrics of interest
 yvars = ['PI','infection','sweat','lung_max_All','lung_min_All','lung_mid_All']
 
+# Mapping of variant types
+di_vartype = {'delete':'Deletion',
+              'mutation':'Substitution',
+              'ins':'Insertion',
+              'dup':'Duplication'}
+
 # Define a category mapping
 di_category = {'infection':'Infection Rate',
                 'sweat':'Sweat Chloride',

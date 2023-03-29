@@ -6,6 +6,8 @@ The readme is structured in the numerical order that scripts should be run to en
 
 The pipeline.sh script shows the order in which the scripts can be run (in theory). In practice, the pipeline will need to be run in chunks unless script 5 (ESMFold) can be run locally. However, the original analysis leveraged a [cloud computing](https://cloud.lambdalabs.com) resource at this stage.
 
+<img src="figures/cftr2_flowchart.png" width="50%>
+
 <br>
 
 
@@ -48,7 +50,8 @@ Being able to run ESMFold at any reasonable speed means having access to a GPU. 
 
 There will be a `data/esmfold/{mutant}.npy` file for 311 different mutations.
 
-![runtime](figures/runtime.png)
+<img src="figures/runtime.png" width="50%>
+
 
 <br>
 
