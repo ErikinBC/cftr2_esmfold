@@ -5,14 +5,35 @@ Utility methods for statistical functions
 # Load modules
 import numpy as np
 import pandas as pd
+from time import time
 from typing import Callable
 from sklearn.metrics import r2_score
 from sklearn.base import BaseEstimator
-from scipy.stats import kendalltau, spearmanr
+from scipy.stats import kendalltau, spearmanr, pearsonr
 from sklearn.preprocessing import StandardScaler
 from statsmodels.nonparametric.kernel_regression import KernelReg
 # Internal modules
 from utilities.utils import str2list, cvec, merge_pairwise_dfs
+
+
+def concordance(y:np.ndarray, yhat:np.ndarray) -> float:
+    """Learn to rank measure of concordance: P(s_i > s_j | y_i > y_j)"""
+    yord = np.argsort(y)
+    y, yhat = y[yord], yhat[yord]
+    success, total = 0.0, 0.0
+    for i in range(1,len(y)):
+        comp_gt = yhat[i] > yhat[:i]
+        comp_eq = yhat[i] == yhat[:i]
+        success += sum(comp_gt) + sum(comp_eq)/2
+        total += len(comp_gt)
+    conc = success / total
+    return conc
+
+
+def somersd(y:np.ndarray, yhat:np.ndarray) -> float:
+    """Transformation of concordance to the [-1,1] scale"""
+    res = 2*concordance(y, yhat) - 1
+    return res
 
 
 def gauss_kernel(z:np.ndarray) -> np.ndarray:
@@ -63,13 +84,50 @@ class NadarayaWatson(BaseEstimator):
         return res
         
         
-def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str) -> pd.DataFrame:
+def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add_pearson:bool=False, add_somersd:bool=False) -> pd.DataFrame:
     """Get the R2, spearman, and kendal measures of correlation"""
     assert isinstance(df, pd.DataFrame)
     cn_gg = str2list(cn_gg)
     res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'r2':r2_score(x[cn_y], x[cn_yhat]), 'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
+    if add_pearson:
+        res2 = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'pearson':pearsonr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
+        res = pd.concat(objs=[res, res2],axis=1)
+    if add_somersd:
+        res3 = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'somersd':somersd(x[cn_y].values, x[cn_yhat].values)},index=[0]))
+        res = pd.concat(objs=[res, res3],axis=1)
     res = res.reset_index().drop(columns=f'level_{len(cn_gg)}')
     res = res.melt(cn_gg,var_name='msr')
+    return res
+
+
+def get_perf_diff(df:pd.DataFrame, function:Callable, di_args:dict, cn_index:str or list, cn_col:str or list, cn_val:str or list) -> pd.DataFrame:
+    """Convenience wrapper for calculating the difference between two factors that are outputted by some arbitrary function
+    
+    Parameters
+    ----------
+    df:                 DataFrame that neesd into first named argument in functino
+    function:           Some callable function that returns a DF that can be pivoted with cn_{index,col,val}
+    di_args:            Dictionary whose keys correspond to named arguments of function (e.g. function(df,**di_args))
+    cn_index:           Index names
+    cn_col:             Column names
+    cn_val:             Value names
+
+    Returns
+    -------
+    A DataFrame with columns cn_index and 'value'
+    """
+    # Input checks
+    assert isinstance(df, pd.DataFrame)
+    assert isinstance(function, Callable), 'function is not callable'
+    assert all([isinstance(c, str) or isinstance(c, list) for c in str2list(cn_index) + str2list(cn_col) + str2list(cn_val)]), 'cn_{} needs be a string or a list'
+    # Run function
+    res = function(df, **di_args)
+    # Get rowwise difference
+    res = res.pivot(cn_index, cn_col, cn_val).diff(axis=1)
+    # Get column with most non-missing values
+    cn_max = res.notnull().sum().idxmax()
+    res = res[cn_max].reset_index()
+    res.rename(columns={cn_max:'value'}, inplace=True)
     return res
 
 
@@ -84,7 +142,7 @@ def perf_btw_mats(df1:pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
     return res
 
 
-def bootstrap_function(df:pd.DataFrame, function:Callable, cn_val:str, cn_gg:str or list, n_boot:int=100, alpha:float=0.05, di_args:dict={}) -> pd.DataFrame:
+def bootstrap_function(df:pd.DataFrame, function:Callable, cn_val:str, cn_gg:str or list, n_boot:int=100, alpha:float=0.05, di_args:dict={}, verbose:bool=False) -> pd.DataFrame:
     """
     A generic wrapper for getting the bootstrapped confidence intervals for some "function"
 
@@ -114,7 +172,13 @@ def bootstrap_function(df:pd.DataFrame, function:Callable, cn_val:str, cn_gg:str
     
     # (iii) Perform the bootstrap
     holder_bs = []
+    stime = time()
     for i in range(n_boot):
+        if verbose:
+            dtime, nleft = time() - stime, n_boot - (i+1)
+            rate = (i+1) / dtime
+            seta = nleft / rate
+            print(f'Iteration {i+1} of {n_boot} (ETA={seta/60:.2f} minutes)')
         df_bs = df.groupby(cn_gg).sample(frac=1,replace=True,random_state=i)
         df_bs = function(df_bs, **di_args).assign(idx=i)
         holder_bs.append(df_bs)

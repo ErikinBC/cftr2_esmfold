@@ -20,8 +20,9 @@ import waterfall_chart
 from mizani.formatters import percent_format
 # Local modules
 from parameters import alpha, n_boot, dir_data, dir_figures, reference_file
+from utilities.stats import bootstrap_function, get_perf_diff
 from utilities.utils import get_cDNA_variant_types, bootstrap_rho, find_arrow_adjustments, cat_from_map, find_closest_match, find_unique_combinations
-from utilities.processing import di_ylbl, di_category, di_vartype, cn_category, vals_catory, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
+from utilities.processing import di_ylbl, di_category, di_vartype, cn_category, get_y_f508, get_y_int, get_y_hetero_ave, get_y_homo
 
 # For multiindex slicing
 idx = pd.IndexSlice
@@ -85,6 +86,10 @@ dat_ncbi_loc = pd.read_csv(os.path.join(dir_data, 'ncbi_genome_loc.csv'), usecol
 cftr_gene = pd.read_csv(os.path.join(dir_data, 'cftr_exon_locs.csv'))
 dat_ncbi_loc['is_intron'] = ~dat_ncbi_loc['from'].isin(cftr_gene['idx'])
 print(f"There are {dat_ncbi_loc['is_intron'].sum()} intronic mutations")
+
+# (xiii) Load the NW-adjusted labels
+adj_y = pd.read_csv(os.path.join(dir_data,'y_adjusted.csv'),index_col=[0],header=[0,1,2])
+adj_y.columns.names = pd.Series(adj_y.columns.names).replace({None:'decomp'})
 
 
 #####################################
@@ -329,14 +334,9 @@ dat_hetero_other = dat_hetero_other.melt(ignore_index=False).dropna().reset_inde
 dat_hetero_other['category'] = cat_from_map(dat_hetero_other['category'],di_category)
 dat_hetero_f508_comp = dat_hetero_other.merge(data_f508_dist[dat_hetero_other.columns.drop('mutation2')],'inner',on=['mutation','category'],suffixes=('_hetero','_f508'))
 
-########################
-# --- (6)  --- #
-
-
-
 
 ########################
-# --- (7) PLOTTING --- #
+# --- (6) PLOTTING --- #
 
 # (i) Plot the GPU run-time of an A100
 dat_smooth = pd.DataFrame({'length':df_runtime['length'], 'smooth':extrap_star(df_runtime['length'])})
