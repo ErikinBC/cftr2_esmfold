@@ -20,6 +20,7 @@ from utilities.utils import merge_pairwise_dfs
 from parameters import dir_data, dir_figures, seed, n_folds
 
 # Clean up for performance
+di_mdl = {'nw':'NW', 'stacked':'NW+NNet'}
 di_perf_msr = {'pearson':'Pearson', 'somersd':"Somer's D", 'rho':'Spearman'} # , 'tau':'Kendall', 'r2':'R-squared'
 
 
@@ -189,30 +190,31 @@ res_bl_comp.drop(columns='check', inplace=True)
 res_bl_comp = res_bl_comp.melt(cn_index+['value','lb','ub','is_sig'],res_bl.columns.to_list(),'mdl','perf')
 res_bl_comp = res_bl_comp.assign(lb=lambda x: np.where(x['mdl']=='nw', np.nan, x['lb']))
 res_bl_comp = res_bl_comp.assign(ub=lambda x: np.where(x['mdl']=='nw', np.nan, x['ub']))
-res_bl_comp['mdl'] = res_bl_comp['mdl'].map({'nw':'NW', 'stacked':'NW+NNet'})
+res_bl_comp['mdl'] = res_bl_comp['mdl'].map(di_mdl)
 res_bl_comp['msr'] = cat_from_map(res_bl_comp['msr'], di_perf_msr)
 res_bl_comp = res_bl_comp[res_bl_comp['msr'].notnull()]
 # How much of an improvement is there for NW estimators > 0 correlation
-res_txt = res_diff.merge(res_bl.query('nw>0').set_index('nw',append=True).index.to_frame(False))
+res_txt = res_diff.merge(res_bl.query('nw>0').set_index(['nw','stacked'],append=True).index.to_frame(False))
 res_txt['msr'] = cat_from_map(res_txt['msr'], di_perf_msr)
 res_txt = res_txt[res_txt['msr'].notnull()]
-res_txt = res_txt.groupby(['category','lbl'])['value'].agg({'mean','median'}).reset_index().assign(y=0.9)
-print(res_txt.round(2))
+res_txt = res_txt.groupby(['category','lbl'])[['value','stacked']].agg('median').reset_index().assign(y=0.9)
 
 # Plot the Nadarya-Watson estimator vs mdl
 posd = pn.position_dodge(0.5)
+gtit = 'Highlighted points are stat. sig. compared to NW only\nBlack text show median correlation for the NW+NNet model where NW>0\nBlue text shows median improvement for NW estimator w/ >0 correlation'
 gg_oof_diff = (pn.ggplot(res_bl_comp, pn.aes(x='lbl',y='perf',color='mdl',shape='msr',alpha='is_sig')) + 
     pn.theme_bw() + 
     pn.labs(y='Value',x='Label type') + 
     pn.geom_hline(yintercept=0,linetype='--') + 
     pn.facet_wrap('~category') + 
-    pn.ggtitle('Out-of-fold performance w/ (NW+NNet) & w/o ESMFold model (NW)\nHighlighted points are stat. sig. compared to NW only\nText shows median improvement for NW estimator w/ >0 correlation') + 
+    pn.ggtitle(gtit) + 
     pn.scale_color_discrete(name='Model') + 
     pn.scale_shape_discrete(name='Correlation') + 
     pn.scale_alpha_manual(name='Significant',values=[0.3,1]) + 
     pn.guides(alpha=False) + 
     pn.geom_point(position=posd) + 
-    pn.geom_text(pn.aes(y='y',label='100*median',x='lbl'),size=8,format_string='{:.0f}%',inherit_aes=False,data=res_txt) + 
+    pn.geom_text(pn.aes(y='y',label='100*value',x='lbl'),size=8,format_string='{:.0f}%',inherit_aes=False,data=res_txt,color='blue') + 
+    pn.geom_text(pn.aes(y='y+0.1',label='100*stacked',x='lbl'),size=8,format_string='{:.0f}%',inherit_aes=False,data=res_txt) + 
     pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
     pn.theme(axis_text_x=pn.element_text(angle=90)) + 
     pn.scale_y_continuous(labels=percent_format()))
@@ -226,7 +228,7 @@ gg_smooth.DEFAULT_AES['linetype'] = 'dashed'
 gg_oof_diff_scatter = (pn.ggplot(df_contrib, pn.aes(x='yhat',y='y',color='mdl')) + 
     pn.theme_bw() + pn.geom_point(size=0.5) + 
     pn.labs(x='Predicted (out-of-fold)',y='Actual') + 
-    pn.scale_color_discrete(name='Model') + 
+    pn.scale_color_discrete(name='Model', labels=lambda x: [di_mdl[z] for z in x]) + 
     gg_smooth + 
     pn.facet_grid('category~lbl',scales='fixed') + 
     pn.ggtitle('Predicted vs actual phenotype for NW vs NW+NNet\nDashed line shows OLS fit') + 
