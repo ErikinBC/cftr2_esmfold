@@ -29,7 +29,7 @@ from utilities.utils import get_embedding_moments, embedding_to_df, process_cftr
 # --- (1) LOAD DATA --- #
 
 # (i) Determine number of ESMFold embeddings
-fn_esmfold = pd.Series(os.listdir(dir_esmfold))
+fn_esmfold = pd.Series(os.listdir(dir_esmfold), dtype=str)
 mutants_esmfold = fn_esmfold.str.replace('.npy','',regex=True)
 assert reference_file in mutants_esmfold.to_list(), f"reference_file must be one of {fn_esmfold}"
 # Get the number of proteins
@@ -158,7 +158,7 @@ gg_missing_rate_any = (pn.ggplot(missing_rate_any_agg, pn.aes(x='num_present', y
                         pn.geom_bar(stat='identity', position=posd, color='black') +
                         pn.scale_fill_discrete(name='Paired alleles?') + 
                         pn.scale_color_discrete(name='Paired alleles?') + 
-                        pn.ggtitle('Number of labels for a mutation') + 
+                        pn.ggtitle('Coloured text shows number of genotypes') + 
                         pn.scale_y_continuous(labels=percent_format()) +
                         pn.labs(y='Percent of mutations', x='Number of measurements') +
                         pn.geom_text(pn.aes(y='pct+0.03',label='n',color='is_pair'), size=8, position=posd))

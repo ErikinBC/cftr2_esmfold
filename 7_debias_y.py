@@ -92,11 +92,17 @@ perf_nw = perf_nw.pivot(cn_gg+['x','y'],'msr',['value','se'])
 # Tidy up for label
 perf_nw = (perf_nw*100).round(1).astype(str)
 perf_nw = perf_nw.xs('r2',1,1).assign(txt=lambda x: 'R2='+x['value'] + '% (±' + x['se'] + ')')
-perf_nw.drop(columns=['value','se'],inplace=True)
+# perf_nw.drop(columns=['value','se'],inplace=True)
 perf_nw.reset_index(inplace=True)
 
+# Use intercept if R2 is negative
+useint_nw = perf_nw.assign(use_int=lambda x: x['value'].astype(float)<0)[['category','lbl','use_int']]
+
 # Calculated "adjusted" y-value
-adj_y = res_nw.assign(err=lambda x: x['y']-x['yhat']).pivot('mutation',['category','lbl'],['err','yhat','y'])
+adj_y = res_nw.merge(useint_nw).merge(res_nw.groupby(['category','lbl'])['y'].mean().reset_index().rename(columns={'y':'mu'}))
+adj_y = adj_y.assign(yhat=lambda x: np.where(x['use_int'], x['mu'], x['yhat']))
+adj_y = adj_y.assign(err=lambda x: x['y']-x['yhat'])
+adj_y = adj_y.pivot('mutation',['category','lbl'],['err','yhat','y'])
 adj_y.to_csv(os.path.join(dir_data,'y_adjusted.csv'),index=True)
 
 
@@ -118,7 +124,7 @@ gg_rho_y = (pn.ggplot(rho_y, pn.aes(x='xlbl',y='rho',color='y',shape='method')) 
     pn.scale_y_continuous(limits=[ax_ylb, 1],labels=percent_format()) + 
     pn.geom_hline(yintercept=0,linetype='--') + 
     pn.theme(axis_text_x=pn.element_text(angle=90),axis_title_x=pn.element_blank()) + 
-    pn.ggtitle('Correlation within types\nLine range shows 95% BS-CI\nText shows average correlation'))
+    pn.ggtitle('Line range shows 95% BS-CI\nText shows average correlation'))
 gg_rho_y.save(os.path.join(dir_figures, 'within_y_rho.png'),width=7, height=4)
 
 

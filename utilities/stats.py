@@ -5,6 +5,7 @@ Utility methods for statistical functions
 # Load modules
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
 from time import time
 from typing import Callable
 from sklearn.metrics import r2_score
@@ -14,6 +15,27 @@ from sklearn.preprocessing import StandardScaler
 from statsmodels.nonparametric.kernel_regression import KernelReg
 # Internal modules
 from utilities.utils import str2list, cvec, merge_pairwise_dfs
+
+
+def r2_score_ols(y:np.ndarray, yhat:np.ndarray, adjusted:bool=False) -> float:
+    """Wrapper for getting the R-squared from a line of best fit (OLS). Can return adjusted-Rsquared with adjusted=True"""
+    x = sm.add_constant(yhat)
+    model = sm.OLS(y, x).fit()
+    if adjusted:
+        r2 = model.rsquared_adj
+    else:
+        r2 = model.rsquared
+    return r2
+
+
+def compare_r2_additive(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_x1:str, cn_x2:str, adjusted:bool=True) -> pd.DataFrame:
+    """Convenience function for calculating the additive R2 for two columns"""
+    df1 = df.groupby(cn_gg).apply(lambda z: r2_score_ols(z[cn_y],z[[cn_x1, cn_x2]].values,adjusted))
+    df1 = df1.reset_index().rename(columns={0:'value'}).assign(x=cn_x1)
+    df12 = df.groupby(cn_gg).apply(lambda z: r2_score_ols(z[cn_y],z[cn_x1].values,adjusted))
+    df12 = df12.reset_index().rename(columns={0:'value'}).assign(x=cn_x1+'_'+cn_x2)
+    res = pd.concat(objs=[df1, df12], axis=0).reset_index(drop=True)
+    return res
 
 
 def concordance(y:np.ndarray, yhat:np.ndarray) -> float:
@@ -82,13 +104,35 @@ class NadarayaWatson(BaseEstimator):
         # Return predicted mean and se as a DF
         res = pd.DataFrame({'yhat':yhat, 'se':sigma_hat})
         return res
-        
-        
-def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add_pearson:bool=False, add_somersd:bool=False) -> pd.DataFrame:
-    """Get the R2, spearman, and kendal measures of correlation"""
+
+
+def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add_pearson:bool=False, add_somersd:bool=False, lm_r2:bool=False, adj_r2:bool=False, lower:None or float=None, upper:None or float=None) -> pd.DataFrame:
+    """Get the key performance measures (R2, spearman, kendal, pearson, and somers-d)
+    
+    Parameters
+    ----------
+    df:             DataFrame with predicted and actual columns
+    cn_gg:          Columns to groupby
+    cn_y:           Name of the actual label column
+    cn_yhat:        Name of the predicted label column
+    add_pearson:    Whether Pearson's correlation should be added
+    add_somersd:    Whether Somer's D concordance should be added
+    lm_r2:          Whether the R-squared square should be based on a line of best fit
+    adj_r2:         Whether the adjusted R2 score should be returned
+    lower:          Whether the outputted statistic should be truncated from below
+    upper:          Whether the outputted statistic should be truncated from above
+
+    Returns
+    -------
+    A DataFrame with columns cn_gg, msr (e.g. 'spearman'), and value
+    """
     assert isinstance(df, pd.DataFrame)
     cn_gg = str2list(cn_gg)
-    res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'r2':r2_score(x[cn_y], x[cn_yhat]), 'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
+    if lm_r2:
+        r2_fun = lambda y, x: r2_score_ols(y, x, adj_r2)
+    else:
+        r2_fun = r2_score
+    res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'r2':r2_fun(x[cn_y], x[cn_yhat]), 'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
     if add_pearson:
         res2 = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'pearson':pearsonr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
         res = pd.concat(objs=[res, res2],axis=1)
@@ -97,6 +141,10 @@ def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add
         res = pd.concat(objs=[res, res3],axis=1)
     res = res.reset_index().drop(columns=f'level_{len(cn_gg)}')
     res = res.melt(cn_gg,var_name='msr')
+    if lower is not None:
+        res['value'] = res['value'].clip(lower=lower)
+    if upper is not None:
+        res['value'] = res['value'].clip(upper=upper)
     return res
 
 
@@ -174,14 +222,14 @@ def bootstrap_function(df:pd.DataFrame, function:Callable, cn_val:str, cn_gg:str
     holder_bs = []
     stime = time()
     for i in range(n_boot):
+        df_bs = df.groupby(cn_gg).sample(frac=1,replace=True,random_state=i)
+        df_bs = function(df_bs, **di_args).assign(idx=i)
+        holder_bs.append(df_bs)
         if verbose:
             dtime, nleft = time() - stime, n_boot - (i+1)
             rate = (i+1) / dtime
             seta = nleft / rate
             print(f'Iteration {i+1} of {n_boot} (ETA={seta/60:.2f} minutes)')
-        df_bs = df.groupby(cn_gg).sample(frac=1,replace=True,random_state=i)
-        df_bs = function(df_bs, **di_args).assign(idx=i)
-        holder_bs.append(df_bs)
     res_bs = pd.concat(holder_bs).reset_index(drop=True)
     
     # Get the quantiles and SE

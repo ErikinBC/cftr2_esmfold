@@ -358,12 +358,12 @@ gg_runtime.save(os.path.join(dir_figures,'runtime.png'), width=6, height=4, dpi=
 tmp_xaxis = rel_exonic.assign(center=lambda x: (x['stop']+x['start'])/2)
 selected_mutations = mutation_locs.sort_values('allele_freq').tail(5)['mutation'].to_list() + ['R347H']
 selected_mutations = mutation_locs[mutation_locs['mutation'].isin(selected_mutations)]
-
+np.random.seed(1)
 gg_exon_pos = (pn.ggplot(mutation_locs, pn.aes(x='x_pos', y='-np.log10(allele_freq)', color='vartype')) + 
             pn.theme_bw() + pn.geom_point() + 
             pn.scale_color_discrete(name='Variant type',labels=lambda x: [di_vartype[z] for z in x]) +
             pn.labs(x='Exon', y='-log10(allele frequency)') + 
-            pn.ggtitle('CFTR2 variants') + 
+            # pn.ggtitle('CFTR2 variants') + 
             pn.geom_text(pn.aes(label='mutation'), data=selected_mutations, size=8, adjust_text={'expand_points':(2.5, 2.5),'arrowprops': {'arrowstyle': 'simple'}}) + 
             pn.theme(axis_text_x=pn.element_text(angle=90)) + 
             pn.scale_x_continuous(breaks=tmp_xaxis['center'], labels=tmp_xaxis['exon']))
@@ -425,16 +425,17 @@ gg_int_f508_comp = (pn.ggplot(dat_int_dist_comp,pn.aes(x='value_int',y='value',c
     pn.geom_smooth(method='lm',linetype='--',se=False) + 
     pn.labs(x='Average mutation value',y='Paired mutation value') + 
     pn.theme(subplots_adjust={'hspace': 0.25,'wspace':0.25}) +
-    pn.ggtitle('Comparing the "average" clinical value to the paired values') + 
+    # pn.ggtitle('Comparing the "average" clinical value to the paired values') + 
     pn.geom_text(pn.aes(label='rho*100',x='x',y='y'),size=8,data=tmp_txt,format_string='rho={:.0f}%'))
 gg_int_f508_comp.save(os.path.join(dir_figures,'int_f508_comp.png'), width=9, height=6)
 
 
 # (vi) Plot the difference in phenotype between the homozygous and F508 hetero, where relevant
 tmp_txt = dat_homo_f508_comp.assign(err=lambda x: x['value_homo']-x['value_f508']).sort_values(['category','err']).groupby('category').apply(lambda x: pd.concat(objs=[x.head(1),x.tail(1)],axis=0)).reset_index(drop=True)
+np.random.seed(1)
 gg_homo_f508_comp = (pn.ggplot(dat_homo_f508_comp,pn.aes(x='value_homo',y='value_f508')) + 
     pn.theme_bw() + pn.geom_point() + 
-    pn.ggtitle('Homozygous vs F508del-hetero\nBlue line shows x==y') +
+    pn.ggtitle('Blue line shows x==y') +
     pn.theme(subplots_adjust={'hspace': 0.25,'wspace':0.25}) + 
     pn.geom_text(pn.aes(label='mutation'),data=tmp_txt,size=10,color='red',adjust_text={'expand_points': (3, 3)}) + 
     pn.labs(x='Homozygous',y='F508-Hetero') + 
@@ -444,19 +445,22 @@ gg_homo_f508_comp.save(os.path.join(dir_figures,'homo_f508_comp.png'), width=8, 
 
 # (vii) Compare F508 to different mutations
 tmp_df = dat_hetero_f508_comp.assign(vdif=lambda x: x['value_hetero']-x['value_f508']).drop(columns=['value_f508','value_hetero'])
-tmp_df['mutation'] = pd.Categorical(tmp_df['mutation'], tmp_df.groupby('mutation')['vdif'].apply(lambda x: x.abs().mean()).sort_values().index)
-tmp_df = tmp_df.sort_values(['category','mutation','vdif']).reset_index(drop=True)
-tmp_df['idx'] = tmp_df.mutation.cat.codes
+tmp_df2 = tmp_df.groupby(['category','mutation'])['vdif'].apply(lambda x: x.abs().mean()).reset_index()
+tmp_df2 = tmp_df2.sort_values(['category','vdif']).drop(columns='vdif')
+tmp_df2 = tmp_df2.assign(idx=lambda x: x.groupby('category').cumcount())
+tmp_df = tmp_df.merge(tmp_df2)
 
-gg_f508_hetero_comp = (pn.ggplot(tmp_df,pn.aes(x='idx',y='vdif',color='idx',group='mutation')) +  
+gtit = 'Mutations assigned numeric code based on average absolute difference within category'
+gg_f508_hetero_comp = (pn.ggplot(tmp_df,pn.aes(x='idx',y='vdif',color='np.log(idx+1)',group='mutation')) +  
     pn.theme_bw() + pn.geom_point(size=0.5) + 
     pn.geom_line(alpha=0.5) + 
     pn.geom_hline(yintercept=0,linetype='--') + 
-    pn.labs(x='Mutation',y='Difference to F508del') + 
+    pn.labs(x='Mutation index',y='Difference to F508del') + 
     pn.guides(color=False) + 
+    pn.scale_x_continuous(breaks=list(range(0,41,10))) + 
     pn.facet_wrap('~category',scales='free') + 
     pn.theme(subplots_adjust={'hspace': 0.25,'wspace':0.25}) + 
-    pn.ggtitle('Clinical outcomes for different heterozygous combinations with F508 benchmark'))
+    pn.ggtitle(gtit))
 gg_f508_hetero_comp.save(os.path.join(dir_figures,'f508_hetero_comp.png'), width=8, height=5)
 
 
