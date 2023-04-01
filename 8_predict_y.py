@@ -20,11 +20,12 @@ from utilities.utils import merge_pairwise_dfs
 from parameters import dir_data, dir_figures, seed, n_folds
 
 # For MultiIndexing
-idx = pd.IndexSlice
+islice = pd.IndexSlice
 
 # Clean up for performance
 di_mdl = {'nw':'NW', 'stacked':'NW+NNet'}
-di_perf_msr = {'pearson':'Pearson', 'somersd':"Somer's D", 'rho':'Spearman'} # , 'tau':'Kendall', 'r2':'R-squared'
+# Other options include: { 'r2':'R-squared', 'pearson':'Pearson', }
+di_perf_msr = {'rho':'Spearman', 'tau':'Kendall', 'somersd':"Somer's D"}
 
 
 #########################
@@ -100,47 +101,45 @@ import plotnine as pn
 from parameters import n_boot, alpha
 from utilities.utils import cat_from_map
 from utilities.processing import di_ylbl, di_category
-from utilities.stats import get_perf_msrs, bootstrap_function, get_perf_diff, compare_r2_additive
+from utilities.stats import get_perf_msrs, bootstrap_function, get_perf_diff
 
-# Merge the data and check
+# (i) Merge the data and check
 tmp1 = y_adj.melt(ignore_index=False).dropna().assign(cn=lambda x: x['category']+'_'+x['lbl']).drop(columns=['category','lbl'])
 tmp1 = tmp1.reset_index().pivot(['mutation','cn'],'decomp','value').reset_index().rename(columns={'yhat':'nw'})
 tmp2 = dat_scatter.rename(columns={'idx':'mutation','y':'err','yhat':'nnet'})
 df_contrib = tmp2.merge(tmp1, 'left', on=['mutation','cn'], suffixes=('_scatter','_adj'))
 assert np.abs(df_contrib['err_scatter'] - df_contrib['err_adj']).max() <= 1e-12, 'Expected values to be the same'
 df_contrib = df_contrib.drop(columns='err_scatter').rename(columns={'err_adj':'err'})
-# compare y ~ nw to y ~ nw+nnet
-df_contrib = df_contrib.assign(stacked=lambda x: x['nw']+x['nnet'])
-df_contrib = df_contrib.melt(['mutation','cn','y'],['nw','stacked'],'mdl','yhat')
 # Clean up the category/label
 tmp_df = df_contrib['cn'].str.split('\\_',regex=True)
 tmp_df = pd.DataFrame({'category':tmp_df.str[:-1].map('_'.join), 'lbl':tmp_df.str[-1]})
 tmp_df['lbl'] = tmp_df['lbl'].map(di_ylbl)
 tmp_df['category'] = tmp_df['category'].map(di_category)
 df_contrib = pd.concat(objs=[tmp_df, df_contrib.drop(columns='cn')],axis=1)
+# compare y ~ nw to y ~ nw+nnet
+df_contrib = df_contrib.assign(stacked=lambda x: x['nw']+x['nnet'])
+df_contrib = df_contrib.melt(['mutation','category','lbl','y'],['nw', 'nnet','stacked'],'mdl','yhat')
+# Put to wide format
 df_contrib_wide = df_contrib.pivot(['mutation','category','lbl'],'mdl',['y','yhat'])
 assert (df_contrib_wide.xs('y',1).diff(axis=1).fillna(0) == 0).all().all(), 'Expected difference to be the same'
-df_contrib_wide = df_contrib_wide.xs('yhat',1).reset_index().merge(df_contrib_wide.loc[:,idx[['y'],['nw']]].xs('nw',1,1).reset_index())
+# Get 3 columns: y, nw, stacked (model)
+df_contrib_wide = df_contrib_wide.xs('yhat',1).reset_index().merge(df_contrib_wide.loc[:,islice[['y'],['nw']]].xs('nw',1,1).reset_index())
 
-# (i) Clean up the names for plotting
+# (ii) Clean up the names for plotting
 tmp_df = dat_scatter['cn'].str.split('\\_',regex=True)
 tmp_df = pd.DataFrame({'category':tmp_df.str[:-1].map('_'.join), 'lbl':tmp_df.str[-1]})
 tmp_df['lbl'] = tmp_df['lbl'].map(di_ylbl)
 tmp_df['category'] = tmp_df['category'].map(di_category)
 dat_eval = pd.concat(objs=[tmp_df, dat_scatter.drop(columns='cn')],axis=1)
 
-# (ii) Get the point estimate and CIs around correlation performance
+# (iii) Get the point estimate and CIs around correlation performance
 cn_gg = ['category','lbl']
-res_fold = bootstrap_function(dat_eval, get_perf_msrs, 'value', cn_gg, n_boot, alpha, {'cn_gg':cn_gg, 'cn_y':'y', 'cn_yhat':'yhat', 'add_pearson':True, 'add_somersd':'True', 'lm_r2':True}, verbose=True)
+di_args_msrs = {'cn_gg':cn_gg, 'cn_y':'y', 'cn_yhat':'yhat', 'add_pearson':False, 'add_somersd':'True', 'lm_r2':False}
+res_fold = bootstrap_function(dat_eval, get_perf_msrs, 'value', cn_gg, n_boot, alpha, di_args_msrs, verbose=True)
 res_fold.to_csv(os.path.join(dir_data, 'res_oof.csv'), index=False)
 res_fold_cat = res_fold.assign(msr=lambda x: cat_from_map(x['msr'], di_perf_msr))
 res_fold_cat = res_fold_cat.dropna().reset_index(drop=True)
 (100*res_fold_cat.groupby('msr')['value'].agg({'mean','median','min','max'}).round(2)).astype(int).astype(str)+'%'
-
-# (iii) Get the point estimate and CIs around adjusted R2
-cn_gg = ['category','lbl']
-di_args_additive = {'cn_gg':cn_gg, 'cn_y':'y', 'cn_x1':'nw', 'cn_x2':'stacked'}
-res_r2 = bootstrap_function(df_contrib_wide, compare_r2_additive, 'value', cn_gg, n_boot, alpha, di_args_additive, verbose=True)
 
 # (iv) Plot the overall correlation performance
 posd = pn.position_dodge(0.5)
@@ -163,26 +162,7 @@ gg_oof_ffn = (pn.ggplot(res_fold_cat, pn.aes(x='category',y='value',color='lbl',
     pn.scale_y_continuous(labels=percent_format()))
 gg_oof_ffn.save(os.path.join(dir_figures, 'oof_perf.png'),width=5.5,height=3.5)
 
-# (v) Plot the R2 performance
-di_x = {'nw':'NW', 'nw_stacked':'NW+NNet'}
-posd = pn.position_dodge(0.5)
-gtit = 'Results use out-of-fold predictions on NW-adjusted labels'
-gg_oof_r2 = (pn.ggplot(res_r2, pn.aes(x='category',y='value',color='x',shape='lbl')) + 
-    pn.theme_bw() + 
-    pn.labs(y='Adjusted R-squared',x='Phenotype category') + 
-    pn.geom_hline(yintercept=0,linetype='--') + 
-    pn.ggtitle(gtit) + 
-    pn.scale_color_discrete(name='Features',labels=lambda z: [di_x[x] for x in z]) + 
-    pn.scale_shape_discrete(name='Label type') + 
-    pn.geom_point(position=posd) + 
-    pn.geom_text(pn.aes(y='ub+0.10',label='100*value',x='category'),position=posd,size=8,format_string='{:.0f}%',angle=90) + 
-    pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
-    pn.theme( axis_text_x=pn.element_text(angle=90)) + 
-    pn.scale_y_continuous(labels=percent_format()))
-gg_oof_r2.save(os.path.join(dir_figures, 'oof_r2.png'),width=5.5,height=3.5)
-
-
-# (vi) Repeat plot but for performance measures
+# (v) Repeat plot but for performance measures
 gtit = 'Results use out-of-fold predictions on NW-adjusted labels'
 gg_oof_ffn_msr = (pn.ggplot(res_fold_cat, pn.aes(x='msr',y='value',color='category',shape='lbl')) + 
     pn.theme_bw() + pn.labs(y='Value',x='Correlation type') + 
@@ -197,7 +177,7 @@ gg_oof_ffn_msr = (pn.ggplot(res_fold_cat, pn.aes(x='msr',y='value',color='catego
     pn.scale_y_continuous(labels=percent_format()))
 gg_oof_ffn_msr.save(os.path.join(dir_figures, 'oof_perf_msr.png'),width=7,height=3.5)
 
-# (vii) Plot the predicted vs actual values
+# (vi) Plot the predicted vs actual values
 tmp_txt = dat_eval.query('idx.isin(["F508del","R347H"])').copy()
 h = 1.75*dat_eval['category'].nunique()
 np.random.seed(1)
@@ -212,47 +192,56 @@ gg_oof_scatter = (pn.ggplot(dat_eval, pn.aes(x='yhat',y='y')) +
 gg_oof_scatter.save(os.path.join(dir_figures, 'oof_scatter.png'),width=9,height=h)
 
 
-#####################################
-# --- (4) RELATIVE CONTRIBUTION --- #
-
+#################################################
+# --- (4) RELATIVE CORRELATION CONTRIBUTION --- #
 
 # (i) Prepare name arguments for correlation
 cn_gg = ['category','lbl','mdl']
-di_args_perf = {'cn_gg':cn_gg,'cn_y':'y','cn_yhat':'yhat','add_pearson':True,'add_somersd':True, 'lm_r2':True, 'lower':0}
+di_args_perf = {'cn_gg':cn_gg,'cn_y':'y','cn_yhat':'yhat','add_pearson':False,'add_somersd':True, 'add_r2':False, 'lower':0}
 cn_index = ['category','lbl','msr']
 cn_col='mdl'
 cn_val='value'
 di_args_diff = {'function':get_perf_msrs, 'di_args':di_args_perf, 'cn_index':cn_index, 'cn_col':cn_col, 'cn_val':cn_val}
 
 # (ii) Get the distribution over differences
-res_diff = bootstrap_function(df_contrib, get_perf_diff, cn_val='value', cn_gg=['category','lbl'], n_boot=n_boot, di_args=di_args_diff, verbose=True)
-res_diff.loc[0]
-
-# Get the baseline and on on differences
-res_bl = get_perf_msrs(df_contrib, **di_args_perf).pivot(cn_index, cn_col, cn_val)
+# Compare NW to NW+NNet
+df_contrib_nw_nnet = df_contrib[df_contrib['mdl'].isin(['nw','stacked'])].copy()
+# Get the baseline
+res_bl = get_perf_msrs(df_contrib_nw_nnet, **di_args_perf).pivot(cn_index, cn_col, cn_val)
+# Get bootstrap
+res_diff = bootstrap_function(df_contrib_nw_nnet, get_perf_diff, cn_val='value', cn_gg=['category','lbl'], n_boot=n_boot, di_args=di_args_diff, verbose=True)
+# Add baseline onto differences
 res_bl_comp = res_bl.reset_index().merge(res_diff)
-res_bl_comp = res_bl_comp.assign(lb=lambda x: x['nw']+x['lb']).assign(check=lambda x: x['lb'] < x['stacked'])
+res_bl_comp = res_bl_comp.assign(lb=lambda x: x['nw']+x['lb'])
+# Make sure lb is less than stacked value
+res_bl_comp = res_bl_comp.assign(check=lambda x: np.where(x['nw'].isnull(), True, x['lb'] < x['stacked']))
 assert res_bl_comp['check'].all(), 'Lower bound should not be greater than model point estimate'
-res_bl_comp = res_bl_comp.assign(ub=lambda x: x['nw']+x['ub']).assign(check=lambda x: x['ub'] > x['stacked'])
+# Make sure ub is greater than stacked value
+res_bl_comp = res_bl_comp.assign(ub=lambda x: x['nw']+x['ub'])
+res_bl_comp = res_bl_comp.assign(check=lambda x: np.where(x['nw'].isnull(), True, x['ub'] > x['stacked']))
 assert res_bl_comp['check'].all(), 'Upper bound should not be greater than model point estimate'
 res_bl_comp.drop(columns='check', inplace=True)
+# Put into long format so that NW/Stacked is in rows
 res_bl_comp = res_bl_comp.melt(cn_index+['value','lb','ub','is_sig'],res_bl.columns.to_list(),'mdl','perf')
+# NW should not have lb/ub
 res_bl_comp = res_bl_comp.assign(lb=lambda x: np.where(x['mdl']=='nw', np.nan, x['lb']))
 res_bl_comp = res_bl_comp.assign(ub=lambda x: np.where(x['mdl']=='nw', np.nan, x['ub']))
+# Clean up labels
 res_bl_comp['mdl'] = res_bl_comp['mdl'].map(di_mdl)
 res_bl_comp['msr'] = cat_from_map(res_bl_comp['msr'], di_perf_msr)
 res_bl_comp = res_bl_comp[res_bl_comp['msr'].notnull()]
-# Remove the homozygous infection rate
-res_bl_comp.query('~(lbl=="Homozygous" & category=="Infection Rate")')
-# How much of an improvement is there for NW estimators (clip to 0 for NW)
-res_txt = res_diff.merge(res_bl.set_index('stacked',append=True).clip(0).reset_index())
+# Clip for -100 to 100%
+res_bl_comp[['lb','ub']] = res_bl_comp[['lb','ub']].clip(-1,1)
+
+# How much of an improvement is there for NW estimators
+res_txt = res_diff.merge(res_bl.set_index('stacked',append=True).reset_index())
 res_txt['msr'] = cat_from_map(res_txt['msr'], di_perf_msr)
 res_txt = res_txt[res_txt['msr'].notnull()]
-res_txt = res_txt.groupby(['category','lbl'])[['value','stacked']].agg('median').reset_index().assign(y=0.9)
+res_txt = res_txt.groupby(['category','lbl'])[['value','stacked']].agg('mean').reset_index().assign(y=0.9)
 
 # Plot the Nadarya-Watson estimator vs mdl
 posd = pn.position_dodge(0.5)
-gtit = 'Highlighted points are stat. sig. compared to NW only\nBlack text show median correlation for the NW+NNet model where NW>0\nBlue text shows median improvement for NW estimator w/ >0 correlation'
+gtit = 'Highlighted points are stat. sig. compared to NW only\nBlack text show average correlation for the NW+NNet model\nBlue text shows average improvement for NW estimator'
 gg_oof_diff = (pn.ggplot(res_bl_comp, pn.aes(x='lbl',y='perf',color='mdl',shape='msr',alpha='is_sig')) + 
     pn.theme_bw() + 
     pn.labs(y='Value',x='Label type') + 
@@ -273,10 +262,10 @@ gg_oof_diff.save(os.path.join(dir_figures, 'oof_diff_perf.png'),width=9,height=3
 
 
 # Plot the scatter
-h = 1.75*df_contrib['category'].nunique()
+h = 1.75*df_contrib_nw_nnet['category'].nunique()
 gg_smooth = pn.geom_smooth(method='lm',se=False, size=0.5)
 gg_smooth.DEFAULT_AES['linetype'] = 'dashed'
-gg_oof_diff_scatter = (pn.ggplot(df_contrib, pn.aes(x='yhat',y='y',color='mdl')) + 
+gg_oof_diff_scatter = (pn.ggplot(df_contrib_nw_nnet, pn.aes(x='yhat',y='y',color='mdl')) + 
     pn.theme_bw() + pn.geom_point(size=0.5) + 
     pn.labs(x='Predicted (out-of-fold)',y='Actual') + 
     pn.scale_color_discrete(name='Model', labels=lambda x: [di_mdl[z] for z in x]) + 

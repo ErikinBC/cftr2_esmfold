@@ -106,7 +106,7 @@ class NadarayaWatson(BaseEstimator):
         return res
 
 
-def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add_pearson:bool=False, add_somersd:bool=False, lm_r2:bool=False, adj_r2:bool=False, lower:None or float=None, upper:None or float=None) -> pd.DataFrame:
+def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add_pearson:bool=False, add_somersd:bool=False, add_r2:bool=True, lm_r2:bool=False, adj_r2:bool=False, lower:None or float=None, upper:None or float=None) -> pd.DataFrame:
     """Get the key performance measures (R2, spearman, kendal, pearson, and somers-d)
     
     Parameters
@@ -132,7 +132,10 @@ def get_perf_msrs(df:pd.DataFrame, cn_gg:str or list, cn_y:str, cn_yhat:str, add
         r2_fun = lambda y, x: r2_score_ols(y, x, adj_r2)
     else:
         r2_fun = r2_score
-    res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'r2':r2_fun(x[cn_y], x[cn_yhat]), 'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
+    if add_r2:
+        res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'r2':r2_fun(x[cn_y], x[cn_yhat]), 'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
+    else:
+        res = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'tau':kendalltau(x[cn_y].values, x[cn_yhat].values)[0], 'rho':spearmanr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
     if add_pearson:
         res2 = df.groupby(cn_gg).apply(lambda x: pd.DataFrame({'pearson':pearsonr(x[cn_y].values, x[cn_yhat].values)[0]},index=[0]))
         res = pd.concat(objs=[res, res2],axis=1)
