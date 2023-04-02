@@ -139,7 +139,9 @@ res_fold = bootstrap_function(dat_eval, get_perf_msrs, 'value', cn_gg, n_boot, a
 res_fold.to_csv(os.path.join(dir_data, 'res_oof.csv'), index=False)
 res_fold_cat = res_fold.assign(msr=lambda x: cat_from_map(x['msr'], di_perf_msr))
 res_fold_cat = res_fold_cat.dropna().reset_index(drop=True)
-(100*res_fold_cat.groupby('msr')['value'].agg({'mean','median','min','max'}).round(2)).astype(int).astype(str)+'%'
+res_fold_cat_txt = res_fold_cat.groupby('msr')['value'].agg({'mean','median','min','max'})
+print((100*res_fold_cat_txt.round(2)).astype(int).astype(str)+'%')
+res_fold_cat_txt.reset_index(inplace=True)
 
 # (iv) Plot the overall correlation performance
 posd = pn.position_dodge(0.5)
@@ -163,7 +165,7 @@ gg_oof_ffn = (pn.ggplot(res_fold_cat, pn.aes(x='category',y='value',color='lbl',
 gg_oof_ffn.save(os.path.join(dir_figures, 'oof_perf.png'),width=5.5,height=3.5)
 
 # (v) Repeat plot but for performance measures
-gtit = 'Results use out-of-fold predictions on NW-adjusted labels'
+gtit = 'Results use out-of-fold predictions on NW-adjusted labels\nText shows average across categories and labels'
 gg_oof_ffn_msr = (pn.ggplot(res_fold_cat, pn.aes(x='msr',y='value',color='category',shape='lbl')) + 
     pn.theme_bw() + pn.labs(y='Value',x='Correlation type') + 
     pn.geom_hline(yintercept=0,linetype='--') + 
@@ -172,6 +174,7 @@ gg_oof_ffn_msr = (pn.ggplot(res_fold_cat, pn.aes(x='msr',y='value',color='catego
     pn.scale_shape_discrete(name='Label type') + 
     pn.geom_point(position=posd) + 
     pn.geom_text(pn.aes(label='100*value',y='ub+0.05'),size=7,format_string='{:.0f}%',position=posd,angle=90) + 
+    pn.geom_text(pn.aes(label='100*mean', y='min',x='msr'),data=res_fold_cat_txt,size=7,format_string='{:.1f}%',nudge_y=-0.12,inherit_aes=False) + 
     pn.geom_linerange(pn.aes(ymin='lb',ymax='ub'),position=posd) + 
     pn.theme( axis_text_x=pn.element_text(angle=90)) + 
     pn.scale_y_continuous(labels=percent_format()))
@@ -277,4 +280,4 @@ gg_oof_diff_scatter.save(os.path.join(dir_figures, 'oof_diff_scatter.png'),width
 
 
 
-print('~~~ End of 9_predict_y.py ~~~')
+print('~~~ End of 8_predict_y.py ~~~')
