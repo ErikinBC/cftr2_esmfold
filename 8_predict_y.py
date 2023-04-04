@@ -124,6 +124,7 @@ df_contrib_wide = df_contrib.pivot(['mutation','category','lbl'],'mdl',['y','yha
 assert (df_contrib_wide.xs('y',1).diff(axis=1).fillna(0) == 0).all().all(), 'Expected difference to be the same'
 # Get 3 columns: y, nw, stacked (model)
 df_contrib_wide = df_contrib_wide.xs('yhat',1).reset_index().merge(df_contrib_wide.loc[:,islice[['y'],['nw']]].xs('nw',1,1).reset_index())
+df_contrib_wide.to_csv(os.path.join(dir_data, 'dat_contrib_wide.csv'),index=False)
 
 # (ii) Clean up the names for plotting
 tmp_df = dat_scatter['cn'].str.split('\\_',regex=True)
@@ -213,6 +214,7 @@ df_contrib_nw_nnet = df_contrib[df_contrib['mdl'].isin(['nw','stacked'])].copy()
 res_bl = get_perf_msrs(df_contrib_nw_nnet, **di_args_perf).pivot(cn_index, cn_col, cn_val)
 # Get bootstrap
 res_diff = bootstrap_function(df_contrib_nw_nnet, get_perf_diff, cn_val='value', cn_gg=['category','lbl'], n_boot=n_boot, di_args=di_args_diff, verbose=True)
+res_diff.to_csv(os.path.join(dir_data, 'res_oof_diff.csv'), index=False)
 # Add baseline onto differences
 res_bl_comp = res_bl.reset_index().merge(res_diff)
 res_bl_comp = res_bl_comp.assign(lb=lambda x: x['nw']+x['lb'])
@@ -235,6 +237,7 @@ res_bl_comp['msr'] = cat_from_map(res_bl_comp['msr'], di_perf_msr)
 res_bl_comp = res_bl_comp[res_bl_comp['msr'].notnull()]
 # Clip for -100 to 100%
 res_bl_comp[['lb','ub']] = res_bl_comp[['lb','ub']].clip(-1,1)
+# Save for later
 
 # How much of an improvement is there for NW estimators
 res_txt = res_diff.merge(res_bl.set_index('stacked',append=True).reset_index())
