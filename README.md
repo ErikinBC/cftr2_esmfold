@@ -1,6 +1,6 @@
 # ESMFold embeddings and CFTR2 clinical outcomes
 
-This repo contains the code required to reproduce the analysis seen in the following [bioRxiv paper](https://www.biorxiv.org) ("Association between Cystic Fibrosis outcomes ESMFold Embeddings") and [technical post](http://www.erikdrysdale.com/cftr2_esmfold/) ("Using ESMFold to predict Cystic Fibrosis outcomes"). 
+This repo contains the code required to reproduce the analysis seen in the following [bioRxiv paper](https://www.biorxiv.org/content/10.1101/2023.10.26.564274v2) ("A multitask neural network trained on embeddings from ESMFold can accurately rank order clinical outcomes for different cystic fibrosis mutations") and [technical post](http://www.erikdrysdale.com/cftr2_esmfold/) ("Using ESMFold to predict Cystic Fibrosis outcomes"). 
 
 The readme is structured in the numerical order that scripts should be run to ensure reproducability. Many of the data files that get generated during this pipeline are not stored on the repo (e.g. html files, embeddings), and will need to be re-created by the user.
 
